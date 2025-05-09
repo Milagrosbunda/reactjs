@@ -10,6 +10,10 @@ $dark: #212529;
 
 @use "bootstrap/scss/bootstrap";
 
+html, body {
+  overflow-x: hidden;
+}
+
 .products-grid {
   display: grid;
   padding: 16px;
@@ -33,30 +37,3 @@ $dark: #212529;
     margin-bottom: 8px;
   }
 }
-
-.modal-content {
-    position: fixed; // importante si usás top y left
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    padding: 2rem;
-    width: 20%;
-    text-align: center;
-    border-radius: 50px;
-    background: white; // ¡esto es probable que falte!
-    z-index: 1050; // asegurarse de que quede por encima
-  }
-  
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1040; // debajo del content
-  }
-  

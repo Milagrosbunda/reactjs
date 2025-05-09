@@ -30,8 +30,6 @@ export const CartProvider = ({ children }) => {
       qty: qty,
     };
 
-    console.log(entry)
-
     const updatedCart = {
       ...sessionCart,
       products: [...sessionCart.products, entry],

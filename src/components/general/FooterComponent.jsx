@@ -3,7 +3,7 @@ import React from "react";
 function FooterComponent() {
   return (
     <footer className="text-center" >
-      <div className="container pt-2" >
+      <div className="container pt-1" >
         <section className="">
           <a
             className="btn btn-link btn-floating btn-lg text-body m-1"
@@ -44,7 +44,7 @@ function FooterComponent() {
       </div>
 
       <div
-        className="text-center p-3"
+        className="text-center p-1"
       >
         © 2025 Copyright
       </div>

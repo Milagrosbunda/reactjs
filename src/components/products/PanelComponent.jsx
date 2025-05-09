@@ -2,16 +2,9 @@ import ProductsComponent from "./ProductsComponent";
 import WelcomeComponente from "../banners/WelcomeComponent";
 import { useContext } from "react";
 import { SectionContext } from "../../contexts/SectionContext";
-import { useNavigate } from "react-router-dom";
 
 const PanelComponent = () => {
-  const navigate = useNavigate();
-  const { setSessionSection } = useContext(SectionContext);
-
-  const loadCartPage = () => {
-    setSessionSection("Productos");
-    navigate("/products");
-  };
+  const { loadCartPage } = useContext(SectionContext);
 
   return (
     <>

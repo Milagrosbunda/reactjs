@@ -1,16 +1,38 @@
 import { useContext, useState } from "react";
 import Modal from "react-modal";
 import { CartContext } from "../../contexts/CartContext";
+import { SectionContext } from "../../contexts/SectionContext";
+import { ALERTS } from "../../constants/constants";
 
 function ModalComponent({ product }) {
   Modal.setAppElement("#root");
   const [openModal, setOpenModal] = useState(false);
   const [qty, setQty] = useState(1);
   const { addProduct } = useContext(CartContext);
+  const {showAlert} = useContext(SectionContext)
+  const modalStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      padding: "2rem",
+      width: "30%",
+      textAlign: "center",
+      borderRadius: "50px",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      zIndex: 1000,
+    },
+  };
 
   const addToCart = (product) => {
     addProduct(product, qty);
     setOpenModal(false);
+    showAlert(ALERTS.productAdded);
   };
 
   return (
@@ -27,7 +49,7 @@ function ModalComponent({ product }) {
         isOpen={openModal}
         onRequestClose={() => setOpenModal(false)}
         contentLabel="Ya casi estamos..."
-        className="modal-products"
+        style={modalStyles}
       >
         <div className="modal-products">
           <h3>🛒 Agregar al carrito de compras: </h3>
@@ -70,6 +92,7 @@ function ModalComponent({ product }) {
           </button>
         </div>
       </Modal>
+
     </>
   );
 }
