@@ -1,52 +1,46 @@
-import React, { useContext, useState} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import ModalComponent from "../cart/ModalComponent";
 import { SectionContext } from "../../contexts/SectionContext";
+import { useCustomProducts } from "../../contexts/UserContext";
 
 const ProductsComponent = ({ title, limited }) => {
-  const mockData = () => {
-    const mockData = [
-      {
-        id: 1,
-        title: "Producto 1",
-        description: "Descripción del producto 1",
-        price: 19.99,
-        image: "https://picsum.photos/200",
-      },
-      {
-        id: 2,
-        title: "Producto 2",
-        description: "Descripción del producto 2",
-        price: 29.99,
-        image: "https://picsum.photos/200",
-      },
-      {
-        id: 3,
-        title: "Producto 3",
-        description: "Descripción del producto 3",
-        price: 39.99,
-        image: "https://picsum.photos/200",
-      },
-    ];
-
-    const results = mockData.map((product) => ({
-      id: product.id,
-      name: product.title,
-      desc: product.description,
-      price: product.price,
-      image: product.image,
-    }));
-    return results;
-  };
-
-
-  const [products, setProducts] = useState(mockData);
+  //TODO: Delete mock after testing
+  const { customProducts, setCustomProducts } = useCustomProducts();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [params, setParams] = useState(limited ? "?limit=3" : "");
 
+  const mockData = () => [
+    {
+      id: 1,
+      name: "Producto 1",
+      desc: "Descripción del producto 1",
+      price: 19.99,
+      image: "https://picsum.photos/200",
+    },
+    {
+      id: 2,
+      name: "Producto 2",
+      desc: "Descripción del producto 2",
+      price: 29.99,
+      image: "https://picsum.photos/200",
+    },
+    {
+      id: 3,
+      name: "Producto 3",
+      desc: "Descripción del producto 3",
+      price: 39.99,
+      image: "https://picsum.photos/200",
+    },
+  ];
 
-  /* useEffect(() => {
-   fetch("https://fakestoreapi.com/products***" + params)
+  const [products, setProducts] = useState(() => [
+    ...customProducts,
+    ...mockData(),
+  ]);
+
+  /*useEffect(() => {
+    fetch("https://fakestoreapi.com/products" + params)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener la informacion de productos");
@@ -55,27 +49,21 @@ const ProductsComponent = ({ title, limited }) => {
       })
       .then((data) => {
         const results = data.map((product) => ({
-          id: product.id,
+          id: Math.random(),
           name: product.title,
           desc: product.description,
           price: product.price,
           image: product.image,
         }));
-
-        setProducts(results);
-        //  setLoading(false);
+        setProducts((prevProducts) => [...prevProducts, results]);
+        setLoading(false);
       })
       .catch((error) => {
         setError(error.message);
-        //   setLoading(false);
+        setLoading(false);
       });
     setLoading(false);
-  }, []
-  setProducts(mockData);
-  setLoading(false);
-}
-
-);*/
+  }, []);*/
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -87,14 +75,14 @@ const ProductsComponent = ({ title, limited }) => {
 
   return (
     <>
+      {console.log(customProducts)}
       <div>
-        <h1 className="card-title p-3">{title}</h1>
+        <h3 className="card-title p-3">{title}</h3>
         <div className="card-group products-grid">
           {products.map((product) => (
             <div className="card">
               <img
                 className="card-img-top product-img"
-                // src={"https://picsum.photos/200"}
                 src={product.image}
                 alt="Card image cap"
               ></img>

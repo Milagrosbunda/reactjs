@@ -15,8 +15,7 @@ function App() {
     <>
       <div className="d-flex flex-column min-vh-100">
         <NavBarComponent />
-
-        <main className="flex-fill">
+        <main className="flex-fill pt-5">
           <Routes>
             <Route path="/" element={<HomeSection />} />
             <Route path="/home" element={<HomeSection />} />

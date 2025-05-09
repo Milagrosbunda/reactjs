@@ -7,6 +7,12 @@ function WelcomeComponente() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
+  const initSession = () => {
+    setSessionUser(name, email);
+    setName("");
+    setEmail('');
+  }
+
   return (
     <>
       {console.log(userName == "")}
@@ -38,7 +44,7 @@ function WelcomeComponente() {
               <button
                 class="btn btn-outline-secondary"
                 type="button"
-                onClick={() => setSessionUser(name, email)}
+                onClick={() => initSession}
                 disabled={name == "" || email == ""}
               >
                 Enviar

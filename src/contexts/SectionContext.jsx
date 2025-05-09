@@ -3,31 +3,34 @@ import ProductsSection from "../sections/ProductsSection";
 import PromoSection from "../sections/PromoSection";
 import CartSection from "../sections/CartSection";
 import HomeSection from "../sections/HomeSection";
-import { SECTIONS } from "../constants/constants";
+import { ALERTS, SECTIONS } from "../constants/constants";
+import { useNavigate } from "react-router-dom";
 
 export const SectionContext = createContext();
 export const SectionProvider = ({ children }) => {
   const [section, setSection] = useState(SECTIONS.home);
+  const navigate = useNavigate();
+  const [showGlobalAlert, setshowGlobalAlert] = useState(ALERTS.none); 
+
+  const showAlert = (code) => {
+    console.log(code);
+    setshowGlobalAlert(code);
+    setTimeout(() => setshowGlobalAlert(null), 2000);
+  };
 
   const setSessionSection = (name) => {
     setSection(name);
   };
 
-  /* const renderContent = () => {
-  switch (section) {
-      case SECTIONS.products:
-        return <ProductsSection limited={false} />;
-      case SECTIONS.promos:
-        return <PromoSection />;
-      case SECTIONS.cart:
-        return <CartSection />;
-      default:
-        return <HomeSection />;
-    }
-  };*/
+  const loadCartPage = () => {
+    setSessionSection("Cart");
+    navigate("/cart");
+  };
 
   return (
-    <SectionContext.Provider value={{ section: section, setSessionSection }}>
+    <SectionContext.Provider
+      value={{ section: section, setSessionSection, loadCartPage, showAlert, showGlobalAlert }}
+    >
       {children}
     </SectionContext.Provider>
   );

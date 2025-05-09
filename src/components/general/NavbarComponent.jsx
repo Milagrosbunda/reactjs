@@ -1,27 +1,20 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-
 import { UserContext } from "../../contexts/UserContext";
 import { SectionContext } from "../../contexts/SectionContext";
 import { SECTIONS } from "../../constants/constants";
 import { CartContext } from "../../contexts/CartContext";
+import AlertComponent from "./AlertComponent";
+import { Link } from "react-router-dom";
 
 function NavBarComponent() {
-  const { setSessionSection } = useContext(SectionContext);
-  const navigate = useNavigate();
+  const { setSessionSection, loadCartPage } = useContext(SectionContext);
   const { userName, setSessionUser } = useContext(UserContext);
   const { sessionCart } = useContext(CartContext);
   const cartQty = sessionCart?.products?.length || 0;
 
-
-  const loadCartPage = () => {
-    setSessionSection("Carrito");
-    navigate("/cart");
-  };
-
   return (
     <>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mx-3">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top px-3">
         <a class="navbar-brand">♍️ MarketPlace</a>
         <button
           class="navbar-toggler"
@@ -42,14 +35,14 @@ function NavBarComponent() {
           <ul class="navbar-nav mr-auto">
             {Object.entries(SECTIONS).map(([key, value]) => (
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  href={"/" + key}
+                <Link
+                  to={"/" + key}
+                  className="nav-link"
                   key={value}
                   onClick={() => setSessionSection(value)}
                 >
                   {value}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -66,69 +59,21 @@ function NavBarComponent() {
             <button
               type="button"
               className={
-                "mx-3 btn btn-" +
-                (cartQty === 0 ? "secondary" : "success")
+                "mx-3 btn btn-" + (cartQty === 0 ? "secondary" : "success")
               }
               onClick={() => loadCartPage()}
               href="/cart"
             >
               Carrito de compras 🛍️
-              <span class="badge badge-success">
-                {cartQty}
-              </span>
+              <span class="badge badge-success">{cartQty}</span>
             </button>
           </form>
         </div>
       </nav>
+
+      <AlertComponent />
     </>
   );
 }
 
 export default NavBarComponent;
-/*
-      <div className="my-5 row">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mx-3">
-          <div className="col-8">
-            <a class="navbar-brand" href="#">
-              MarketPlace
-            </a>
-            <div class="collapse navbar-collapse" id="navbarText">
-              <ul class="navbar-nav mr-auto">
-                {sections.map((section) => (
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      href="#"
-                      key={section}
-                      onClick={() => onSelection(section)}
-                    >
-                      {section}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="col-4">
-            <div>
-              <button
-                type="button"
-                className={
-                  "btn btn-primary" + (userName == "" ? " d-none" : "")
-                }
-              >
-                {userName}
-              </button>
-            </div>
-            <button
-              type="button"
-              className={"btn btn-" + (count > 0 ? "success" : "secondary")}
-              //style={{ marginLeft: "75%" }}
-              onClick={() => onSelection("Carrito")}
-            >
-              Carrito de compras 🛍️
-              <span class="badge badge-success">{count}</span>
-            </button>
-          </div>
-        </nav>
-      </div>*/
