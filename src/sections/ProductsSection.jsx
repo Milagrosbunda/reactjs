@@ -5,7 +5,7 @@ import ProductsComponent from "../components/products/ProductsComponent";
 function ProductsSection() {
   return (
     <>
-      <ProductsComponent limited={false} title="Ver todos los productos" />
+      <ProductsComponent limited={false} title="Nuestros productos" />
     </>
   );
 }

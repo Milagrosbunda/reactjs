@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import ProductsSection from "../sections/ProductsSection";
-import PromoSection from "../sections/PromoSection";
-import CartSection from "../sections/CartSection";
-import HomeSection from "../sections/HomeSection";
 import { UserContext } from "./UserContext";
 
 export const CartContext = createContext();
+export const useSessionCart = () => useContext(CartContext);
+
 export const CartProvider = ({ children }) => {
   const { userName } = useContext(UserContext);
   const [sessionCart, setSessionCart] = useState(null);
@@ -21,25 +19,46 @@ export const CartProvider = ({ children }) => {
     }
   }, [userName, sessionCart]);
 
+  const checkQty = (qty) => {
+    return qty <= 10 ? qty : 10;
+  };
+
   const addProduct = (product, qty) => {
     if (!sessionCart) return;
-    const entry = {
-      sku: product.code,
-      name: product.name,
-      price: product.price,
-      qty: qty,
-    };
 
+    const existingProduct = sessionCart.products.find(
+      (p) => p.sku === product.code
+    );
+
+    let updatedProducts;
+
+    if (existingProduct) {
+      updatedProducts = sessionCart.products.map((p) =>
+        p.sku === product.code ? { ...p, qty: checkQty(p.qty + qty) } : p
+      );
+    } else {
+      const newEntry = {
+        sku: product.code,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        qty: checkQty(qty),
+      };
+      updatedProducts = [...sessionCart.products, newEntry];
+    }
     const updatedCart = {
       ...sessionCart,
-      products: [...sessionCart.products, entry],
+      products: updatedProducts,
     };
-
     setSessionCart(updatedCart);
   };
 
+  const updateCart = (updatedList) => {
+    setSessionCart({ ...sessionCart, products: updatedList });
+  };
+
   return (
-    <CartContext.Provider value={{ sessionCart, addProduct }}>
+    <CartContext.Provider value={{ sessionCart, addProduct, updateCart, checkQty }}>
       {children}
     </CartContext.Provider>
   );

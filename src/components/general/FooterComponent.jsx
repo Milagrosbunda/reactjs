@@ -4,7 +4,7 @@ function FooterComponent() {
   return (
     <footer className="text-center" >
       <div className="container pt-1" >
-        <section className="">
+        <section>
           <a
             className="btn btn-link btn-floating btn-lg text-body m-1"
             href="#!"

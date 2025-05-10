@@ -1,20 +1,39 @@
-import { useContext, useState } from "react";
-import { CartContext } from "../contexts/CartContext";
-import BannerComponent from "../components/banners/BannerComponent";
-import PanelComponent from "../components/products/PanelComponent";
+import { CartContext, useSessionCart } from "../contexts/CartContext";
 import WelcomeComponente from "../components/banners/WelcomeComponent";
+import { useContext } from "react";
+import { ALERTS } from "../constants/constants";
+import { SectionContext } from "../contexts/SectionContext";
+import { UserContext } from "../contexts/UserContext";
 
 function CartSection() {
-  const { sessionCart } = useContext(CartContext);
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  const { sessionCart } = useSessionCart();
+  const { updateCart } = useContext(CartContext);
+  const { showAlert } = useContext(SectionContext);
+  const { userName } = useContext(UserContext);
+
   const shipping = 500;
   const subtotal =
     sessionCart?.products?.reduce(
       (sum, item) => sum + item.price * item.qty,
       0
     ) || 0;
-  const discount = sessionCart?.owner == "" ? 0.0 : subtotal * 0.1;
+  const discount = userName == "" ? 0.0 : subtotal * 0.1;
   const total = subtotal + shipping - discount;
+
+  const changeQty = (index, newQty) => {
+    if (newQty > 10) {
+      newQty = 10;
+      showAlert(ALERTS.qtyUpdated);
+    }
+    const updatedValue = [...sessionCart.products];
+    updatedValue[index].qty = newQty;
+    updateCart(updatedValue);
+  };
+
+  const removeProduct = (index) => {
+    const updatedList = sessionCart.products.filter((_, i) => i !== index);
+    updateCart(updatedList);
+  };
 
   if (!sessionCart || sessionCart.products.length === 0) {
     return <p className="text-center mt-4">Tu carrito está vacío.</p>;
@@ -45,10 +64,33 @@ function CartSection() {
                   <div>
                     <strong>{product.name}</strong>
                     <br />
-                    <small>Cantidad: {product.qty}</small>
+                    <small>Precio unitario: ${product.price.toFixed(2)}</small>
                   </div>
                 </div>
-                <span>${(product.price * product.qty).toFixed(2)}</span>
+
+                <div className="d-flex align-items-center">
+                  <input
+                    type="number"
+                    min="1"
+                    max="10"
+                    value={product.qty}
+                    onChange={(e) => changeQty(index, parseInt(e.target.value))}
+                    className="form-control form-control-sm mx-2"
+                    style={{ width: "70px" }}
+                  />
+
+                  <span className="mx-2">
+                    ${(product.price * product.qty).toFixed(2)}
+                  </span>
+
+                  <button
+                    className="btn btn-outline-danger btn-sm"
+                    onClick={() => removeProduct(index)}
+                    title="Eliminar del carrito"
+                  >
+                    🗑️
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

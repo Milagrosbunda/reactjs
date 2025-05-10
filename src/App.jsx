@@ -1,8 +1,6 @@
 import "./App.css";
 import "./styles/custom.scss";
-import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
 import NavBarComponent from "./components/general/NavbarComponent";
 import CartSection from "./sections/CartSection";
 import ProductsSection from "./sections/ProductsSection";

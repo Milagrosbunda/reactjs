@@ -8,7 +8,7 @@ function ModalComponent({ product }) {
   Modal.setAppElement("#root");
   const [openModal, setOpenModal] = useState(false);
   const [qty, setQty] = useState(1);
-  const { addProduct } = useContext(CartContext);
+  const { addProduct, checkQty } = useContext(CartContext);
   const {showAlert} = useContext(SectionContext)
   const modalStyles = {
     content: {
@@ -28,6 +28,10 @@ function ModalComponent({ product }) {
       zIndex: 1000,
     },
   };
+
+  const checkQtyInput = (newQty) => {
+    setQty(checkQty(newQty))
+  }
 
   const addToCart = (product) => {
     addProduct(product, qty);
@@ -62,20 +66,14 @@ function ModalComponent({ product }) {
             </div>
             <input
               className="form-control"
-              list="stockLimit"
               id="qty"
               type="number"
               min="1"
               max="10"
               defaultValue={1}
               value={qty}
-              onChange={(e) => setQty(Number(e.target.value))}
+              onChange={(e) => checkQtyInput(Number(e.target.value))}
             />
-            <datalist id="stockLimit">
-              {[...Array(10)].map((_, i) => (
-                <option key={i + 1} value={i + 1} />
-              ))}
-            </datalist>
           </div>
           <button
             className="btn btn-dark"

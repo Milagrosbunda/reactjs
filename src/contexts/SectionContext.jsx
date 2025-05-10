@@ -29,7 +29,7 @@ export const SectionProvider = ({ children }) => {
 
   return (
     <SectionContext.Provider
-      value={{ section: section, setSessionSection, loadCartPage, showAlert, showGlobalAlert }}
+      value={{ section: section, setSessionSection, loadCartPage, showAlert, showGlobalAlert, setshowGlobalAlert }}
     >
       {children}
     </SectionContext.Provider>
