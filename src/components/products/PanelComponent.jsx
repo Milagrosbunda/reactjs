@@ -1,10 +1,9 @@
 import ProductsComponent from "./ProductsComponent";
 import WelcomeComponente from "../banners/WelcomeComponent";
-import { useContext } from "react";
-import { SectionContext } from "../../contexts/SectionContext";
+import { useNavigate } from "react-router-dom";
 
 const PanelComponent = () => {
-  const { loadCartPage } = useContext(SectionContext);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -19,7 +18,7 @@ const PanelComponent = () => {
             style={{ width: "100%" }}
             type="button"
             className="btn btn-primary"
-            onClick={() => loadCartPage()}
+            onClick={() => navigate("/products")}
           >
             Ver todos los productos
           </button>

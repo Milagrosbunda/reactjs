@@ -21,4 +21,8 @@ export const ALERTS = {
     type: "success",
     message: "El producto fue creado correctamente!",
   },
+  qtyUpdated: {
+    type: "warning",
+    message: "Cantidad ajustada segun el stock disponible.",
+  },
 };

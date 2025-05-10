@@ -3,6 +3,8 @@ import { useContext, useState } from "react";
 import { SectionContext } from "../../contexts/SectionContext";
 import { UserContext } from "../../contexts/UserContext";
 import { ALERTS } from "../../constants/constants";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 const ProductFormComponent = () => {
   const { createProduct } = useContext(UserContext);
@@ -30,7 +32,9 @@ const ProductFormComponent = () => {
 
           <form>
             <div className="form-group">
-              <label className="pt-1" for="nameInput">Nombre del producto:</label>
+              <label className="pt-1" for="nameInput">
+                Nombre del producto:
+              </label>
               <input
                 type="text"
                 className="form-control pt-3"
@@ -41,7 +45,9 @@ const ProductFormComponent = () => {
             </div>
 
             <div class="form-group">
-              <label className="pt-3" for="descInput">Descripcion:</label>
+              <label className="pt-3" for="descInput">
+                Descripcion:
+              </label>
               <textarea
                 className="form-control pt-3"
                 id="descInput"
@@ -51,7 +57,9 @@ const ProductFormComponent = () => {
               ></textarea>
             </div>
             <div class="form-group">
-              <label className="pt-3" for="priceInput">Precio unitario:</label>
+              <label className="pt-3" for="priceInput">
+                Precio unitario:
+              </label>
               <input
                 type="number"
                 className="form-control pt-3"

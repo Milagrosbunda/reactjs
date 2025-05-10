@@ -1,17 +1,32 @@
+@use "bootstrap/scss/bootstrap" with (
+  $primary: #dad873,
+  $secondary: #8fc278,
+  $success: #58a188,
+  $danger: #e9b983,
+  $warning: #fab005,
+  $info: #fdfb86,
+  $light: #efeeb4,
+  $dark: #454d66
+);
 
-$primary: #d6364b;
-$secondary: #ff6584;
-$success: #8fe9d7;
-$danger: #e17055;
-$warning: #fab005;
-$info: #74c0fc;
-$light: #f8f9fa;
-$dark: #212529;
-
-@use "bootstrap/scss/bootstrap";
-
-html, body {
+html,
+body {
   overflow-x: hidden;
+  background-color: lighten(bootstrap.$light, 10%);
+}
+
+footer {
+  background-color: bootstrap.$primary;
+  margin-top: 2%;
+}
+
+.cart-icon {
+  font-weight: bold;
+}
+
+.card {
+  background-color: lighten(bootstrap.$light, 5%);
+  border-radius: 10px;
 }
 
 .products-grid {
@@ -36,4 +51,17 @@ html, body {
     font-weight: bold;
     margin-bottom: 8px;
   }
+}
+
+input,
+textarea {
+  border-radius: 10px;
+  max-width: 90%;
+  display: inline-block !important;
+  background-color: lighten(bootstrap.$light, 15%);
+}
+
+.list-group-item {
+  background-color: lighten(bootstrap.$light, 15%);
+  border-radius: 10px;
 }

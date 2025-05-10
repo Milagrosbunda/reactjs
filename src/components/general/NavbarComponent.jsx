@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { SectionContext } from "../../contexts/SectionContext";
 import { SECTIONS } from "../../constants/constants";
-import { CartContext } from "../../contexts/CartContext";
+import { useSessionCart } from "../../contexts/CartContext";
 import AlertComponent from "./AlertComponent";
 import { Link } from "react-router-dom";
 
 function NavBarComponent() {
   const { setSessionSection, loadCartPage } = useContext(SectionContext);
   const { userName, setSessionUser } = useContext(UserContext);
-  const { sessionCart } = useContext(CartContext);
+  const { sessionCart, setSessionCart } = useSessionCart();
   const cartQty = sessionCart?.products?.length || 0;
 
   return (
@@ -59,7 +59,7 @@ function NavBarComponent() {
             <button
               type="button"
               className={
-                "mx-3 btn btn-" + (cartQty === 0 ? "secondary" : "success")
+                "cart-icon mx-3 btn btn-" + (cartQty === 0 ? "info" : "success")
               }
               onClick={() => loadCartPage()}
               href="/cart"

@@ -1,17 +1,27 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { UserContext } from "../../contexts/UserContext";
 
 function WelcomeComponente() {
   const { setSessionUser } = useContext(UserContext);
   const { userName } = useContext(UserContext);
+  const emailRef = useRef(null);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [validForm, setValidForm] = useState(name != "" && email != "");
 
-  const initSession = () => {
+  const login = () => {
     setSessionUser(name, email);
     setName("");
-    setEmail('');
-  }
+    setEmail("");
+  };
+
+  const checkForm = (value) => {
+    setEmail(value);
+    if (emailRef.current) {
+      setValidForm(emailRef.current.checkValidity());
+    }
+  };
 
   return (
     <>
@@ -32,20 +42,21 @@ function WelcomeComponente() {
             />
             <input
               type="email"
+              ref={emailRef}
               class="form-control"
               placeholder="Ingresa tu email..."
               aria-label="Ingresa tu email..."
               aria-describedby="basic-addon2"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => checkForm(e.target.value)}
             />
 
             <div class="input-group-append">
               <button
-                class="btn btn-outline-secondary"
+                class="btn btn-primary"
                 type="button"
-                onClick={() => initSession}
-                disabled={name == "" || email == ""}
+                onClick={() => login()}
+                disabled={!validForm}
               >
                 Enviar
               </button>

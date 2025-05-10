@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { SectionContext } from "../../contexts/SectionContext";
+import { Link } from "react-router-dom";
 
 function AlertComponent() {
   const { showGlobalAlert } = useContext(SectionContext);
+  const { loadCartPage } = useContext(SectionContext);
 
   return (
     <>
@@ -13,9 +15,14 @@ function AlertComponent() {
           {showGlobalAlert.message}
           {showGlobalAlert.link && (
             <>
-              <a href={showGlobalAlert.link.href} className="alert-link">
-                {showGlobalAlert.link.text}
-              </a>
+              <Link
+                to={showGlobalAlert.link?.href}
+                className="alert-link"
+                key={showGlobalAlert.link?.href}
+                onClick={() => loadCartPage()}
+              >
+                {showGlobalAlert.link?.text}
+              </Link>
               !
             </>
           )}
