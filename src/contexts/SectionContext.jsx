@@ -13,7 +13,6 @@ export const SectionProvider = ({ children }) => {
   const [showGlobalAlert, setshowGlobalAlert] = useState(ALERTS.none); 
 
   const showAlert = (code) => {
-    console.log(code);
     setshowGlobalAlert(code);
     setTimeout(() => setshowGlobalAlert(null), 2000);
   };

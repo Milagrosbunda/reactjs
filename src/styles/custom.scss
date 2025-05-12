@@ -65,3 +65,14 @@ textarea {
   background-color: lighten(bootstrap.$light, 15%);
   border-radius: 10px;
 }
+
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: bootstrap.$dark !important;
+}
+
+.product-card {
+  width: 80%;
+  justify-self:center
+}

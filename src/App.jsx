@@ -7,6 +7,8 @@ import ProductsSection from "./sections/ProductsSection";
 import PromoSection from "./sections/PromoSection";
 import HomeSection from "./sections/HomeSection";
 import FooterComponent from "./components/general/FooterComponent";
+import AdminSection from "./sections/AdminSection";
+import ProtectedRoute from "./contexts/ProtectedRoute";
 
 function App() {
   return (
@@ -23,6 +25,14 @@ function App() {
             />
             <Route path="/promos" element={<PromoSection />} />
             <Route path="/cart" element={<CartSection />} />
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute>
+                  <AdminSection />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
         <FooterComponent />

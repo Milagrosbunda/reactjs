@@ -33,10 +33,11 @@ function CartSection() {
   const removeProduct = (index) => {
     const updatedList = sessionCart.products.filter((_, i) => i !== index);
     updateCart(updatedList);
+    showAlert(ALERTS.deletedEntry);
   };
 
   if (!sessionCart || sessionCart.products.length === 0) {
-    return <p className="text-center mt-4">Tu carrito está vacío.</p>;
+    return <h3 className="text-center mt-4">Tu carrito está vacío.</h3>;
   }
 
   return (

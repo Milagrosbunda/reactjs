@@ -16,6 +16,10 @@ const ProductFormComponent = () => {
   const createNewProduct = () => {
     createProduct(name, desc, price);
     showAlert(ALERTS.productCreated);
+    resetForm();
+  };
+
+  const resetForm = () => {
     setName("");
     setDesc("");
     setPrice(0.0);
@@ -23,16 +27,16 @@ const ProductFormComponent = () => {
 
   return (
     <>
-      <>
+      <div className="product-card mt-5">
         <div className="card">
-          <h3 className="card-title pt-5">
-            🔍 Podes crear tu producto custom...
+          <h3 className="card-title pt-4">
+            🔍 Podes crear cargar un nuevo producto
           </h3>
           <div className="card-body"></div>
 
           <form>
             <div className="form-group">
-              <label className="pt-1" for="nameInput">
+              <label className="py-1" for="nameInput">
                 Nombre del producto:
               </label>
               <input
@@ -45,7 +49,7 @@ const ProductFormComponent = () => {
             </div>
 
             <div class="form-group">
-              <label className="pt-3" for="descInput">
+              <label className="pt-3 px-5" for="descInput">
                 Descripcion:
               </label>
               <textarea
@@ -57,7 +61,7 @@ const ProductFormComponent = () => {
               ></textarea>
             </div>
             <div class="form-group">
-              <label className="pt-3" for="priceInput">
+              <label className="pt-3 px-5" for="priceInput">
                 Precio unitario:
               </label>
               <input
@@ -77,9 +81,16 @@ const ProductFormComponent = () => {
             >
               Enviar
             </button>
+            <button
+              className="btn btn-primary mx-5"
+              onClick={resetForm}
+              disabled={name == "" && desc == "" && price == 0}
+            >
+              Reset
+            </button>
           </div>
         </div>
-      </>
+      </div>
     </>
   );
 };

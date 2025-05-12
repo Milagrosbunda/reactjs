@@ -5,10 +5,11 @@ import { SECTIONS } from "../../constants/constants";
 import { useSessionCart } from "../../contexts/CartContext";
 import AlertComponent from "./AlertComponent";
 import { Link } from "react-router-dom";
+import LoginComponent from "./LoginComponent";
 
 function NavBarComponent() {
   const { setSessionSection, loadCartPage } = useContext(SectionContext);
-  const { userName, setSessionUser } = useContext(UserContext);
+  const { userName, setSessionUser, userType } = useContext(UserContext);
   const { sessionCart, setSessionCart } = useSessionCart();
   const cartQty = sessionCart?.products?.length || 0;
 
@@ -45,6 +46,18 @@ function NavBarComponent() {
                 </Link>
               </li>
             ))}
+            {userType && (
+              <li class="nav-item">
+                <Link
+                  to={"/admin"}
+                  className="nav-link"
+                  key="Admin"
+                  onClick={() => setSessionSection("Admin")}
+                >
+                  Gestionar productos
+                </Link>
+              </li>
+            )}
           </ul>
 
           <form class="form-inline my-2 my-lg-0">
@@ -56,6 +69,9 @@ function NavBarComponent() {
             >
               👪 {userName}
             </button>
+
+            {userName == "" && <LoginComponent />}
+
             <button
               type="button"
               className={
