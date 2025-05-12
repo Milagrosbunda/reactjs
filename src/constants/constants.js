@@ -4,6 +4,17 @@ export const SECTIONS = {
   promos: "Ofertas",
 };
 
+export const USER_TYPES = {
+  admin: {
+    type: "admin",
+    user: "admin",
+    password: "nimda",
+  },
+  client: {
+    type: "client",
+  },
+};
+
 export const ALERTS = {
   productAdded: {
     type: "success",
@@ -24,5 +35,13 @@ export const ALERTS = {
   qtyUpdated: {
     type: "warning",
     message: "Cantidad ajustada segun el stock disponible.",
+  },
+  deletedEntry: {
+    type: "warning",
+    message: "Producto eliminado del carrito.",
+  },
+  loginOk: {
+    type: "success",
+    message: "Pudiste iniciar sesion correctamente!",
   },
 };

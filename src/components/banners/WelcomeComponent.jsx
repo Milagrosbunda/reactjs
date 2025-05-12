@@ -25,7 +25,6 @@ function WelcomeComponente() {
 
   return (
     <>
-      {console.log(userName == "")}
       <div class={"card text-center " + (userName == "" ? "" : " d-none")}>
         <div className="card-body">
           <h5 class="card-title">Accede a descuentos imperdibles</h5>

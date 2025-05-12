@@ -4,13 +4,13 @@ import { SectionContext } from "../../contexts/SectionContext";
 import { useCustomProducts } from "../../contexts/UserContext";
 
 const ProductsComponent = ({ title, limited }) => {
-  //TODO: Delete mock after testing
   const { customProducts, setCustomProducts } = useCustomProducts();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [params, setParams] = useState(limited ? "?limit=3" : "");
 
-  const mockData = () => [
+  //TODO: Delete mock after testing
+  /* const mockData = () => [
     {
       id: 1,
       name: "Producto 1",
@@ -38,8 +38,11 @@ const ProductsComponent = ({ title, limited }) => {
     ...customProducts,
     ...mockData(),
   ]);
+*/
 
-  /*useEffect(() => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
     fetch("https://fakestoreapi.com/products" + params)
       .then((response) => {
         if (!response.ok) {
@@ -48,6 +51,7 @@ const ProductsComponent = ({ title, limited }) => {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         const results = data.map((product) => ({
           id: Math.random(),
           name: product.title,
@@ -55,15 +59,14 @@ const ProductsComponent = ({ title, limited }) => {
           price: product.price,
           image: product.image,
         }));
-        setProducts((prevProducts) => [...prevProducts, results]);
+        setProducts([...customProducts, ...results]);
         setLoading(false);
       })
       .catch((error) => {
         setError(error.message);
         setLoading(false);
       });
-    setLoading(false);
-  }, []);*/
+  }, [customProducts]);
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -75,7 +78,6 @@ const ProductsComponent = ({ title, limited }) => {
 
   return (
     <>
-      {console.log(customProducts)}
       <div>
         <h3 className="card-title p-3">{title}</h3>
         <div className="card-group products-grid">
