@@ -14,7 +14,6 @@ export const UserProvider = ({ children }) => {
   const setSessionUser = (name, email) => {
     setUserName(name);
     setUserEmail(email);
-    setUserType(USER_TYPES.client.type);
   };
 
   const loginAdmin = (name, pass) => {

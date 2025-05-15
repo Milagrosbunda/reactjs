@@ -18,9 +18,8 @@ function WelcomeComponente() {
 
   const checkForm = (value) => {
     setEmail(value);
-    if (emailRef.current) {
-      setValidForm(emailRef.current.checkValidity());
-    }
+    const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setValidForm(mailRegex.test(value));
   };
 
   return (

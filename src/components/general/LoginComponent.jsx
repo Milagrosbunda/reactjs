@@ -79,7 +79,7 @@ function LoginComponent() {
           ) : (
             <form onSubmit={loginAsAdmin}>
               <div className="mb-3">
-                <label className="form-label">Usuario</label>
+                <label className="form-label px-2">Usuario</label>
                 <input
                   type="text"
                   className="form-control"
