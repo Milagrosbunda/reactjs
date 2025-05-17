@@ -44,8 +44,10 @@ export const CartProvider = ({ children }) => {
         image: product.image,
         qty: checkQty(qty),
       };
+      console.log("adding value")
       updatedProducts = [...sessionCart.products, newEntry];
     }
+    console.log(updatedProducts)
     const updatedCart = {
       ...sessionCart,
       products: updatedProducts,
