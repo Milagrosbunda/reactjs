@@ -20,13 +20,16 @@ footer {
   margin-top: 2%;
 }
 
-.cart-icon {
+.cart-icon,
+.form-label {
   font-weight: bold;
 }
 
-.card {
+.card,
+.login-form {
   background-color: lighten(bootstrap.$light, 5%);
   border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .products-grid {
@@ -74,5 +77,10 @@ textarea {
 
 .product-card {
   width: 80%;
-  justify-self:center
+  justify-self: center;
 }
+
+button:hover {
+  font-weight: bold;
+}
+

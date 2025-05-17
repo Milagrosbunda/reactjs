@@ -26,10 +26,11 @@ function LoginComponent() {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      padding: "2rem",
+      padding: "2rem 2rem 1rem 2rem",
       width: "40%",
       textAlign: "center",
       borderRadius: "50px",
+      backgroundColor: "rgb(250, 249, 198)",
     },
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -52,6 +53,7 @@ function LoginComponent() {
 
   return (
     <>
+    
       <button
         class="btn btn-primary"
         type="button"
@@ -77,7 +79,7 @@ function LoginComponent() {
           {!isAdmin ? (
             <WelcomeComponente />
           ) : (
-            <form onSubmit={loginAsAdmin}>
+            <form className="login-form p-2" onSubmit={loginAsAdmin}>
               <div className="mb-3">
                 <label className="form-label px-2">Usuario</label>
                 <input

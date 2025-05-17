@@ -28,7 +28,7 @@ function WelcomeComponente() {
         <div className="card-body">
           <h5 class="card-title">Accede a descuentos imperdibles</h5>
 
-          <div class="input-group mb-3">
+          <div class="input-group my-3">
             <input
               type="text"
               class="form-control"

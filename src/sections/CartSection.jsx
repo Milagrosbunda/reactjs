@@ -62,7 +62,7 @@ function CartSection() {
                       marginRight: 10,
                     }}
                   />
-                  <div>
+                  <div className="text-start">
                     <strong>{product.name}</strong>
                     <br />
                     <small>Precio unitario: ${product.price.toFixed(2)}</small>
@@ -81,7 +81,7 @@ function CartSection() {
                   />
 
                   <span className="mx-2">
-                    ${(product.price * product.qty).toFixed(2)}
+                  <strong>  ${(product.price * product.qty).toFixed(2)}</strong>
                   </span>
 
                   <button

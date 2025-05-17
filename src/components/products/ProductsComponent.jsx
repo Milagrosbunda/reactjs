@@ -53,7 +53,7 @@ const ProductsComponent = ({ title, limited }) => {
       .then((data) => {
         console.log(data);
         const results = data.map((product) => ({
-          id: Math.random(),
+          code: Math.random(),
           name: product.title,
           desc: product.description,
           price: product.price,
@@ -69,11 +69,11 @@ const ProductsComponent = ({ title, limited }) => {
   }, [customProducts]);
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return <div className="m-5">⏳ Cargando... ⏳</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <h4 className="m-5"> 🚨 Tuvimos un error al obtener los productos. Por favor reintente mas tarde. 🚨</h4>;
   }
 
   return (
@@ -91,7 +91,6 @@ const ProductsComponent = ({ title, limited }) => {
               <div className="card-body">
                 <h5 className="card-title product-title">{product.name}</h5>
                 <p className="card-text">${product.price}</p>
-
                 <ModalComponent product={product} />
               </div>
             </div>
