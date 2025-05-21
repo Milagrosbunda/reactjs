@@ -4,12 +4,14 @@ import { useContext } from "react";
 import { ALERTS } from "../constants/constants";
 import { SectionContext } from "../contexts/SectionContext";
 import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function CartSection() {
   const { sessionCart } = useSessionCart();
   const { updateCart } = useContext(CartContext);
   const { showAlert } = useContext(SectionContext);
   const { userName } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const shipping = 500;
   const subtotal =
@@ -42,6 +44,7 @@ function CartSection() {
 
   return (
     <div className="container mt-4">
+      {console.log(sessionCart.products)}
       <h2 className="mb-4">Carrito de compras</h2>
       <div className="row">
         <div className="col-md-8">
@@ -63,7 +66,16 @@ function CartSection() {
                     }}
                   />
                   <div className="text-start">
-                    <strong>{product.name}</strong>
+                    <strong
+                      className="link-name"
+                      onClick={() =>
+                        navigate(`/product/${product.code}`, {
+                          state: { product },
+                        })
+                      }
+                    >
+                      {product.name}
+                    </strong>
                     <br />
                     <small>Precio unitario: ${product.price.toFixed(2)}</small>
                   </div>
@@ -81,7 +93,10 @@ function CartSection() {
                   />
 
                   <span className="mx-2">
-                  <strong>  ${(product.price * product.qty).toFixed(2)}</strong>
+                    <strong>
+                      {" "}
+                      ${(product.price * product.qty).toFixed(2)}
+                    </strong>
                   </span>
 
                   <button

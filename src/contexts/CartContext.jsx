@@ -27,27 +27,25 @@ export const CartProvider = ({ children }) => {
     if (!sessionCart) return;
 
     const existingProduct = sessionCart.products.find(
-      (p) => p.sku === product.code
+      (p) => p.code === product.code
     );
 
     let updatedProducts;
 
     if (existingProduct) {
       updatedProducts = sessionCart.products.map((p) =>
-        p.sku === product.code ? { ...p, qty: checkQty(p.qty + qty) } : p
+        p.code === product.code ? { ...p, qty: checkQty(p.qty + qty) } : p
       );
     } else {
       const newEntry = {
-        sku: product.code,
+        code: product.code,
         name: product.name,
         price: product.price,
         image: product.image,
         qty: checkQty(qty),
       };
-      console.log("adding value")
       updatedProducts = [...sessionCart.products, newEntry];
     }
-    console.log(updatedProducts)
     const updatedCart = {
       ...sessionCart,
       products: updatedProducts,

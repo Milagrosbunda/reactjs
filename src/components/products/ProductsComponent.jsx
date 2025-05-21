@@ -2,12 +2,14 @@ import React, { useContext, useState, useEffect } from "react";
 import ModalComponent from "../cart/ModalComponent";
 import { SectionContext } from "../../contexts/SectionContext";
 import { useCustomProducts } from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const ProductsComponent = ({ title, limited }) => {
   const { customProducts, setCustomProducts } = useCustomProducts();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [params, setParams] = useState(limited ? "?limit=3" : "");
+  const navigate = useNavigate();
 
   //TODO: Delete mock after testing
   /* const mockData = () => [
@@ -53,7 +55,7 @@ const ProductsComponent = ({ title, limited }) => {
       .then((data) => {
         console.log(data);
         const results = data.map((product) => ({
-          code: Math.random(),
+          code: Math.floor(Math.random() * 10000),
           name: product.title,
           desc: product.description,
           price: product.price,
@@ -73,7 +75,13 @@ const ProductsComponent = ({ title, limited }) => {
   }
 
   if (error) {
-    return <h4 className="m-5"> 🚨 Tuvimos un error al obtener los productos. Por favor reintente mas tarde. 🚨</h4>;
+    return (
+      <h4 className="m-5">
+        {" "}
+        🚨 Tuvimos un error al obtener los productos. Por favor reintente mas
+        tarde. 🚨
+      </h4>
+    );
   }
 
   return (
@@ -89,7 +97,12 @@ const ProductsComponent = ({ title, limited }) => {
                 alt="Card image cap"
               ></img>
               <div className="card-body">
-                <h5 className="card-title product-title">{product.name}</h5>
+                <h5
+                  className="card-title product-title link-name"
+                  onClick={() => navigate(`/product/${product.code}`, { state: { product } })}
+                >
+                  {product.name}
+                </h5>
                 <p className="card-text">${product.price}</p>
                 <ModalComponent product={product} />
               </div>
