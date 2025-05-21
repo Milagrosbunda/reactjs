@@ -9,6 +9,7 @@ import HomeSection from "./sections/HomeSection";
 import FooterComponent from "./components/general/FooterComponent";
 import AdminSection from "./sections/AdminSection";
 import ProtectedRoute from "./contexts/ProtectedRoute";
+import PDPSection from "./sections/PDPSection";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               path="/products"
               element={<ProductsSection limited={false} />}
             />
+            <Route path="/product/:id" element={<PDPSection />} />
             <Route path="/promos" element={<PromoSection />} />
             <Route path="/cart" element={<CartSection />} />
             <Route
