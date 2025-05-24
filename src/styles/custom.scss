@@ -80,7 +80,8 @@ textarea {
   justify-self: center;
 }
 
-button:hover {
+button:hover,
+.active-section {
   font-weight: bold;
 }
 
