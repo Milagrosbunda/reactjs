@@ -8,9 +8,10 @@ import { Link } from "react-router-dom";
 import LoginComponent from "./LoginComponent";
 
 function NavBarComponent() {
-  const { setSessionSection, loadCartPage } = useContext(SectionContext);
+  const { setSessionSection, loadCartPage, section } =
+    useContext(SectionContext);
   const { userName, setSessionUser, userType } = useContext(UserContext);
-  const { sessionCart, setSessionCart } = useSessionCart();
+  const { sessionCart } = useSessionCart();
   const cartQty = sessionCart?.products?.length || 0;
 
   return (
@@ -38,7 +39,9 @@ function NavBarComponent() {
               <li class="nav-item">
                 <Link
                   to={"/" + key}
-                  className="nav-link"
+                  className={
+                    "nav-link " + (section == value ? "active-section" : "")
+                  }
                   key={value}
                   onClick={() => setSessionSection(value)}
                 >
@@ -50,7 +53,9 @@ function NavBarComponent() {
               <li class="nav-item">
                 <Link
                   to={"/admin"}
-                  className="nav-link"
+                  className={
+                    "nav-link " + (section == "Admin" ? "active-section" : "")
+                  }
                   key="Admin"
                   onClick={() => setSessionSection("Admin")}
                 >

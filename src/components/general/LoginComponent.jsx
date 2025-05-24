@@ -13,9 +13,9 @@ function LoginComponent() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [userName, setUserName] = useState("");
   const [pass, setPass] = useState("");
-  const { loginAdmin, userType } = useContext(UserContext);
+  const { loginAdmin } = useContext(UserContext);
   const [showError, setShowError] = useState(false);
-  const { showAlert } = useContext(SectionContext);
+  const { showAlert, setSessionSection } = useContext(SectionContext);
   const navigate = useNavigate();
 
   const modalStyles = {
@@ -47,13 +47,13 @@ function LoginComponent() {
       setShowError(false);
       setOpenModal(false);
       showAlert(ALERTS.loginOk);
+      setSessionSection("Admin");
       navigate("/admin");
     }
   };
 
   return (
     <>
-    
       <button
         class="btn btn-primary"
         type="button"

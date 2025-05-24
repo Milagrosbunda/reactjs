@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
   const setSessionUser = (name, email) => {
     setUserName(name);
     setUserEmail(email);
+    setUserType(null);
   };
 
   const loginAdmin = (name, pass) => {
