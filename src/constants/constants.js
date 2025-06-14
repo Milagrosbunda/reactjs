@@ -32,6 +32,10 @@ export const ALERTS = {
     type: "success",
     message: "El producto fue creado correctamente!",
   },
+  successUpdated: {
+    type: "success",
+    message: "Cantidad actualizada.",
+  },
   qtyUpdated: {
     type: "warning",
     message: "Cantidad ajustada segun el stock disponible.",

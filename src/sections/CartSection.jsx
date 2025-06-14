@@ -30,6 +30,7 @@ function CartSection() {
     const updatedValue = [...sessionCart.products];
     updatedValue[index].qty = newQty;
     updateCart(updatedValue);
+    showAlert(ALERTS.successUpdated);
   };
 
   const removeProduct = (index) => {
