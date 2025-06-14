@@ -44,4 +44,12 @@ export const ALERTS = {
     type: "success",
     message: "Pudiste iniciar sesion correctamente!",
   },
+  productEdited: {
+    type: "success",
+    message: "Producto editado correctamente.",
+  },
+  productDeleted: {
+    type: "success",
+    message: "Producto eliminado correctamente.",
+  },
 };
