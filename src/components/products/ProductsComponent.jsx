@@ -3,9 +3,14 @@ import ModalComponent from "../cart/ModalComponent";
 import { SectionContext } from "../../contexts/SectionContext";
 import { useCustomProducts } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { getProducts, getLimitedProducts } from "../../contexts/API";
+import {
+  getProducts,
+  getLimitedProducts,
+  getPromoProducts,
+} from "../../contexts/API";
+import { ERRORS, PRODUCT_REQUEST } from "../../constants/constants";
 
-const ProductsComponent = ({ title, limited }) => {
+const ProductsComponent = ({ title, type }) => {
   const { customProducts, setCustomProducts } = useCustomProducts();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,9 +19,22 @@ const ProductsComponent = ({ title, limited }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    (limited ? getLimitedProducts(3) : getProducts())
+    let fetchData;
+    switch (type) {
+      case PRODUCT_REQUEST.FULL:
+        fetchData = getProducts();
+        break;
+      case PRODUCT_REQUEST.LIMITED:
+        fetchData = getLimitedProducts(3);
+        break;
+      case PRODUCT_REQUEST.PROMOS:
+        fetchData = getPromoProducts();
+        break;
+      default:
+        fetchData = Promise.resolve([]);
+    }
+    fetchData
       .then((data) => {
-        console.log(data);
         const results = data.map((product) => ({
           code: product.id,
           name: product.name,
@@ -28,7 +46,18 @@ const ProductsComponent = ({ title, limited }) => {
         setLoading(false);
       })
       .catch((error) => {
-        setError(error.message);
+        console.log(error);
+        switch (error.status) {
+          case 404:
+            setError(ERRORS.NOT_FOUND);
+            break;
+          case 500:
+            setError(ERRORS.FAILED);
+            break;
+          default:
+            setError(ERRORS.GENERAL);
+            break;
+        }
         setLoading(false);
       });
   }, [customProducts]);
@@ -38,13 +67,7 @@ const ProductsComponent = ({ title, limited }) => {
   }
 
   if (error) {
-    return (
-      <h4 className="m-5">
-        {" "}
-        🚨 Tuvimos un error al obtener los productos. Por favor reintente mas
-        tarde. 🚨
-      </h4>
-    );
+    return <h4 className="m-5">🚨 {error} 🚨</h4>;
   }
 
   return (
@@ -62,9 +85,7 @@ const ProductsComponent = ({ title, limited }) => {
               <div className="card-body">
                 <h5
                   className="card-title product-title link-name"
-                  onClick={() =>
-                    navigate(`/product/${product.code}`)
-                  }
+                  onClick={() => navigate(`/product/${product.code}`)}
                 >
                   {product.name}
                 </h5>

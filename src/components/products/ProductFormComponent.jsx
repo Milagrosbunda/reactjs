@@ -1,5 +1,5 @@
 import ProductsComponent from "./ProductsComponent";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { SectionContext } from "../../contexts/SectionContext";
 import { UserContext } from "../../contexts/UserContext";
 import { ALERTS } from "../../constants/constants";
@@ -12,14 +12,15 @@ const ProductFormComponent = () => {
   const { showAlert } = useContext(SectionContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const [price, setPrice] = useState(0.0);
+  const [hasPromo, setHasPromo] = useState(false);
   const [products, setProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const formPosition = useRef(null);
 
   const submitForm = async () => {
-    const product = { name, description, price: parseFloat(price) };
-    console.log(product);
-
+    const product = { name, description, price: parseFloat(price), hasPromo };
     if (editingId) {
       await updateProduct(editingId, product);
       showAlert(ALERTS.productEdited);
@@ -27,14 +28,21 @@ const ProductFormComponent = () => {
       await createProduct(product);
       showAlert(ALERTS.productCreated);
     }
-
     resetForm();
     fetchProducts();
+  };
+
+  const focusForm = () => {
+    if (formPosition.current) {
+      formPosition.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const resetForm = () => {
     setName("");
     setDescription("");
+    setImage("");
+    setHasPromo(false);
     setPrice(0.0);
   };
 
@@ -47,7 +55,10 @@ const ProductFormComponent = () => {
     setName(product.name);
     setDescription(product.description);
     setPrice(product.price);
+    setImage(product.image);
+    setHasPromo(product.hasPromo);
     setEditingId(product.id);
+    focusForm();
   };
 
   const deleteProduct = async (id) => {
@@ -64,7 +75,9 @@ const ProductFormComponent = () => {
     <>
       <div className="product-card mt-5">
         <div className="card">
-          <h3 className="card-title pt-4">🔍 Crear o editar producto</h3>
+          <h3 className="card-title pt-4" ref={formPosition}>
+            🔍 Crear o editar producto
+          </h3>
 
           <form>
             <div className="form-group">
@@ -93,16 +106,45 @@ const ProductFormComponent = () => {
               ></textarea>
             </div>
             <div class="form-group">
-              <label className="pt-3 px-5" for="priceInput">
-                Precio unitario:
+              <label className="pt-3 px-5" for="imageInput">
+                URL de la imagen:
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control pt-3"
-                id="priceInput"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
+                id="imageInput"
+                rows="2"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></input>
+            </div>
+
+            <div className="form-group">
+              <label className="pt-3 px-5" htmlFor="priceInput">
+                Precio unitario:
+              </label>
+              <div className="d-flex align-items-center gap-3">
+                <input
+                  type="number"
+                  className="form-control price-input mt-3"
+                  id="priceInput"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="promoInput"
+                    checked={hasPromo}
+                    onChange={(e) => setHasPromo(e.target.checked)}
+                  />
+                  <label className="form-check-label" htmlFor="promoInput">
+                    ⚡ Promocionar
+                  </label>
+                </div>
+              </div>
             </div>
           </form>
 
@@ -127,6 +169,7 @@ const ProductFormComponent = () => {
                   <tr>
                     <th scope="col">Nombre</th>
                     <th scope="col">Precio</th>
+                    <th scope="col">Imagen</th>
                     <th scope="col" colSpan="2">
                       Opciones
                     </th>
@@ -142,6 +185,13 @@ const ProductFormComponent = () => {
                       </td>
                       <td>
                         <p className="m-2">${product.price}</p>
+                      </td>
+                      <td>
+                        <img
+                          className="img-table"
+                          src={product.image}
+                          alt="Card image cap"
+                        ></img>
                       </td>
                       <td>
                         <button

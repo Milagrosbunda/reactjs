@@ -15,6 +15,19 @@ export const USER_TYPES = {
   },
 };
 
+export const PRODUCT_REQUEST = {
+  LIMITED: "LIMITED",
+  FULL: "FULL",
+  PROMOS: "PROMOS",
+};
+
+export const ERRORS = {
+  NOT_FOUND: "No pudimos encontrar resultados para tu busqueda.",
+  FAILED:
+    "Tuvimos un error al obtener los productos. Por favor reintente mas tarde.",
+  GENERAL: "Error interno. Por favor reintente mas tarde.",
+};
+
 export const ALERTS = {
   productAdded: {
     type: "success",

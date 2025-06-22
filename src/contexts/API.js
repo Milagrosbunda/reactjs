@@ -3,6 +3,15 @@ const BASE_URL = new URL(
 );
 const HEADER = { "Content-Type": "application/json" };
 
+function handleResponse(response) {
+  if (!response.ok) {
+    const error = new Error("HTTP error");
+    error.status = response.status;
+    throw error;
+  }
+  return response.json();
+}
+
 export const createProduct = (product) =>
   fetch(BASE_URL, {
     method: "POST",
@@ -21,16 +30,22 @@ export const updateProduct = (id, product) =>
   });
 
 export const getProducts = () =>
-  fetch(`${BASE_URL}?page=1`).then((res) => res.json());
+  fetch(`${BASE_URL}?page=1`).then((res) => {
+    return handleResponse(res);
+  });
 
 export const getLimitedProducts = (maxQty) =>
-  fetch(`${BASE_URL}?page=1&limit=${maxQty}`).then((res) => res.json());
+  fetch(`${BASE_URL}?page=1&limit=${maxQty}`).then((res) => {
+    return handleResponse(res);
+  });
 
 export const getProduct = (id) => {
   return fetch(`${BASE_URL}/${id}`).then((res) => {
-    if (!res.ok) {
-      throw new Error("Failed to fetch product");
-    }
-    return res.json();
+    return handleResponse(res);
   });
 };
+
+export const getPromoProducts = () =>
+  fetch(`${BASE_URL}?hasPromo=true&page=1`).then((res) => {
+    return handleResponse(res);
+  });
