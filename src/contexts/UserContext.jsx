@@ -1,15 +1,12 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState } from "react";
 import { ALERTS, USER_TYPES } from "../constants/constants";
-import { SectionContext } from "./SectionContext";
 
 export const UserContext = createContext();
-export const useCustomProducts = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
   const [userType, setUserType] = useState(null);
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [customProducts, setCustomProducts] = useState([]);
 
   const setSessionUser = (name, email) => {
     setUserName(name);
@@ -34,8 +31,6 @@ export const UserProvider = ({ children }) => {
         userEmail,
         setSessionUser,
         setUserType,
-        customProducts,
-        setCustomProducts,
         loginAdmin,
       }}
     >

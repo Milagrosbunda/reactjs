@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import Banner from "../components/banners/BannerComponent";
 import PanelComponent from "../components/products/PanelComponent";
 import { UserContext } from "../contexts/UserContext";

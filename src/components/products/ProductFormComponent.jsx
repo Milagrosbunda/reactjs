@@ -53,7 +53,8 @@ const ProductFormComponent = () => {
 
   const fetchProducts = async () => {
     const data = await getProducts();
-    setProducts(data);
+    const sortedData = data.sort((a, b) => Number(b.id) - Number(a.id));
+    setProducts(sortedData);
   };
 
   const editProduct = (product) => {
