@@ -26,17 +26,6 @@ export const UserProvider = ({ children }) => {
     return false;
   };
 
-  const createProduct = (newName, newDesc, newPrice) => {
-    const newProduct = {
-      id: Math.random().toString(36).substr(2, 9),
-      name: newName,
-      price: newPrice,
-      description: newDesc,
-      image: "https://picsum.photos/200",
-    };
-    setCustomProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-
   return (
     <UserContext.Provider
       value={{
@@ -45,7 +34,6 @@ export const UserProvider = ({ children }) => {
         userEmail,
         setSessionUser,
         setUserType,
-        createProduct,
         customProducts,
         setCustomProducts,
         loginAdmin,

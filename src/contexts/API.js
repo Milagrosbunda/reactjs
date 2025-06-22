@@ -19,7 +19,7 @@ export const createProduct = (product) =>
     body: JSON.stringify(product),
   });
 
-export const deleteProduct = (id) =>
+export const deleteProductById = (id) =>
   fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
 
 export const updateProduct = (id, product) =>
