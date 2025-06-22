@@ -15,6 +15,19 @@ export const USER_TYPES = {
   },
 };
 
+export const PRODUCT_REQUEST = {
+  LIMITED: "LIMITED",
+  FULL: "FULL",
+  PROMOS: "PROMOS",
+};
+
+export const ERRORS = {
+  NOT_FOUND: "No pudimos encontrar resultados para tu busqueda.",
+  FAILED:
+    "Tuvimos un error al obtener los productos. Por favor reintente mas tarde.",
+  GENERAL: "Error interno. Por favor reintente mas tarde.",
+};
+
 export const ALERTS = {
   productAdded: {
     type: "success",
@@ -32,6 +45,10 @@ export const ALERTS = {
     type: "success",
     message: "El producto fue creado correctamente!",
   },
+  successUpdated: {
+    type: "success",
+    message: "Cantidad actualizada.",
+  },
   qtyUpdated: {
     type: "warning",
     message: "Cantidad ajustada segun el stock disponible.",
@@ -43,5 +60,13 @@ export const ALERTS = {
   loginOk: {
     type: "success",
     message: "Pudiste iniciar sesion correctamente!",
+  },
+  productEdited: {
+    type: "success",
+    message: "Producto editado correctamente.",
+  },
+  productDeleted: {
+    type: "success",
+    message: "Producto eliminado correctamente.",
   },
 };

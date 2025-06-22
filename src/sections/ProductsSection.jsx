@@ -1,11 +1,13 @@
-import Banner from "../components/banners/BannerComponent";
-import PanelComponent from "../components/products/PanelComponent";
 import ProductsComponent from "../components/products/ProductsComponent";
+import { PRODUCT_REQUEST } from "../constants/constants";
 
 function ProductsSection() {
   return (
     <>
-      <ProductsComponent limited={false} title="Nuestros productos" />
+      <ProductsComponent
+        type={PRODUCT_REQUEST.FULL}
+        title="Nuestros productos"
+      />
     </>
   );
 }

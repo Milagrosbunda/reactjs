@@ -89,3 +89,14 @@ button:hover,
   cursor: pointer;
   text-decoration: underline;
 }
+
+.img-table {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.price-input {
+  margin-left: 5%;
+  width: 70%;
+}

@@ -10,6 +10,7 @@ import FooterComponent from "./components/general/FooterComponent";
 import AdminSection from "./sections/AdminSection";
 import ProtectedRoute from "./contexts/ProtectedRoute";
 import PDPSection from "./sections/PDPSection";
+import { PRODUCT_REQUEST } from "./constants/constants";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
             <Route path="/home" element={<HomeSection />} />
             <Route
               path="/products"
-              element={<ProductsSection limited={false} />}
+              element={<ProductsSection type={PRODUCT_REQUEST.FULL} />}
             />
             <Route path="/product/:id" element={<PDPSection />} />
             <Route path="/promos" element={<PromoSection />} />

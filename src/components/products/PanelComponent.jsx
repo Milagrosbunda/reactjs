@@ -1,6 +1,7 @@
 import ProductsComponent from "./ProductsComponent";
 import WelcomeComponente from "../banners/WelcomeComponent";
 import { useNavigate } from "react-router-dom";
+import { PRODUCT_REQUEST } from "../../constants/constants";
 
 const PanelComponent = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const PanelComponent = () => {
         </div>
         <div class="w-100"></div>
         <div class="col w-100">
-          <ProductsComponent limited={true} title="Trending" />
+          <ProductsComponent type={PRODUCT_REQUEST.LIMITED} title="Trending" />
           <button
             style={{ width: "100%" }}
             type="button"

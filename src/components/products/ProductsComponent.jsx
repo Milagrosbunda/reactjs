@@ -3,60 +3,41 @@ import ModalComponent from "../cart/ModalComponent";
 import { SectionContext } from "../../contexts/SectionContext";
 import { useCustomProducts } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import {
+  getProducts,
+  getLimitedProducts,
+  getPromoProducts,
+} from "../../contexts/API";
+import { ERRORS, PRODUCT_REQUEST } from "../../constants/constants";
 
-const ProductsComponent = ({ title, limited }) => {
+const ProductsComponent = ({ title, type }) => {
   const { customProducts, setCustomProducts } = useCustomProducts();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [params, setParams] = useState(limited ? "?limit=3" : "");
   const navigate = useNavigate();
-
-  //TODO: Delete mock after testing
-  /* const mockData = () => [
-    {
-      id: 1,
-      name: "Producto 1",
-      desc: "Descripción del producto 1",
-      price: 19.99,
-      image: "https://picsum.photos/200",
-    },
-    {
-      id: 2,
-      name: "Producto 2",
-      desc: "Descripción del producto 2",
-      price: 29.99,
-      image: "https://picsum.photos/200",
-    },
-    {
-      id: 3,
-      name: "Producto 3",
-      desc: "Descripción del producto 3",
-      price: 39.99,
-      image: "https://picsum.photos/200",
-    },
-  ];
-
-  const [products, setProducts] = useState(() => [
-    ...customProducts,
-    ...mockData(),
-  ]);
-*/
 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products" + params)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Error al obtener la informacion de productos");
-        }
-        return response.json();
-      })
+    let fetchData;
+    switch (type) {
+      case PRODUCT_REQUEST.FULL:
+        fetchData = getProducts();
+        break;
+      case PRODUCT_REQUEST.LIMITED:
+        fetchData = getLimitedProducts(3);
+        break;
+      case PRODUCT_REQUEST.PROMOS:
+        fetchData = getPromoProducts();
+        break;
+      default:
+        fetchData = Promise.resolve([]);
+    }
+    fetchData
       .then((data) => {
-        console.log(data);
         const results = data.map((product) => ({
-          code: Math.floor(Math.random() * 10000),
-          name: product.title,
+          code: product.id,
+          name: product.name,
           desc: product.description,
           price: product.price,
           image: product.image,
@@ -65,7 +46,18 @@ const ProductsComponent = ({ title, limited }) => {
         setLoading(false);
       })
       .catch((error) => {
-        setError(error.message);
+        console.log(error);
+        switch (error.status) {
+          case 404:
+            setError(ERRORS.NOT_FOUND);
+            break;
+          case 500:
+            setError(ERRORS.FAILED);
+            break;
+          default:
+            setError(ERRORS.GENERAL);
+            break;
+        }
         setLoading(false);
       });
   }, [customProducts]);
@@ -75,13 +67,7 @@ const ProductsComponent = ({ title, limited }) => {
   }
 
   if (error) {
-    return (
-      <h4 className="m-5">
-        {" "}
-        🚨 Tuvimos un error al obtener los productos. Por favor reintente mas
-        tarde. 🚨
-      </h4>
-    );
+    return <h4 className="m-5">🚨 {error} 🚨</h4>;
   }
 
   return (
@@ -99,7 +85,7 @@ const ProductsComponent = ({ title, limited }) => {
               <div className="card-body">
                 <h5
                   className="card-title product-title link-name"
-                  onClick={() => navigate(`/product/${product.code}`, { state: { product } })}
+                  onClick={() => navigate(`/product/${product.code}`)}
                 >
                   {product.name}
                 </h5>

@@ -30,6 +30,7 @@ function CartSection() {
     const updatedValue = [...sessionCart.products];
     updatedValue[index].qty = newQty;
     updateCart(updatedValue);
+    showAlert(ALERTS.successUpdated);
   };
 
   const removeProduct = (index) => {
@@ -77,7 +78,7 @@ function CartSection() {
                       {product.name}
                     </strong>
                     <br />
-                    <small>Precio unitario: ${product.price.toFixed(2)}</small>
+                    <small>Precio unitario: ${parseFloat(product.price).toFixed(2)}</small>
                   </div>
                 </div>
 
