@@ -5,10 +5,14 @@ import { UserContext } from "../../contexts/UserContext";
 import { ALERTS } from "../../constants/constants";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { getProducts, updateProduct } from "../../contexts/API";
+import {
+  getProducts,
+  updateProduct,
+  createProduct,
+  deleteProductById,
+} from "../../contexts/API";
 
 const ProductFormComponent = () => {
-  const { createProduct } = useContext(UserContext);
   const { showAlert } = useContext(SectionContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -44,11 +48,13 @@ const ProductFormComponent = () => {
     setImage("");
     setHasPromo(false);
     setPrice(0.0);
+    setEditingId("");
   };
 
   const fetchProducts = async () => {
     const data = await getProducts();
-    setProducts(data);
+    const sortedData = data.sort((a, b) => Number(b.id) - Number(a.id));
+    setProducts(sortedData);
   };
 
   const editProduct = (product) => {
@@ -62,7 +68,7 @@ const ProductFormComponent = () => {
   };
 
   const deleteProduct = async (id) => {
-    await deleteProduct(id);
+    await deleteProductById(id);
     showAlert(ALERTS.productDeleted);
     fetchProducts();
   };

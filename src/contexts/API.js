@@ -2,7 +2,6 @@ const BASE_URL = new URL(
   "https://684d6df665ed087139161491.mockapi.io/api/v2/products"
 );
 const HEADER = { "Content-Type": "application/json" };
-
 function handleResponse(response) {
   if (!response.ok) {
     const error = new Error("HTTP error");
@@ -19,7 +18,7 @@ export const createProduct = (product) =>
     body: JSON.stringify(product),
   });
 
-export const deleteProduct = (id) =>
+export const deleteProductById = (id) =>
   fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
 
 export const updateProduct = (id, product) =>
@@ -30,7 +29,7 @@ export const updateProduct = (id, product) =>
   });
 
 export const getProducts = () =>
-  fetch(`${BASE_URL}?page=1`).then((res) => {
+  fetch(`${BASE_URL}`).then((res) => {
     return handleResponse(res);
   });
 
@@ -46,6 +45,6 @@ export const getProduct = (id) => {
 };
 
 export const getPromoProducts = () =>
-  fetch(`${BASE_URL}?hasPromo=true&page=1`).then((res) => {
+  fetch(`${BASE_URL}?hasPromo=true`).then((res) => {
     return handleResponse(res);
   });
