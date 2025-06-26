@@ -3,13 +3,13 @@ import Modal from "react-modal";
 import { CartContext } from "../../contexts/CartContext";
 import { SectionContext } from "../../contexts/SectionContext";
 import { ALERTS } from "../../constants/constants";
+import { toast } from "react-toastify";
 
 function ModalComponent({ product }) {
   Modal.setAppElement("#root");
   const [openModal, setOpenModal] = useState(false);
   const [qty, setQty] = useState(1);
   const { addProduct, checkQty } = useContext(CartContext);
-  const {showAlert} = useContext(SectionContext)
   const modalStyles = {
     content: {
       top: "50%",
@@ -30,13 +30,13 @@ function ModalComponent({ product }) {
   };
 
   const checkQtyInput = (newQty) => {
-    setQty(checkQty(newQty))
-  }
+    setQty(checkQty(newQty));
+  };
 
   const addToCart = (product) => {
     addProduct(product, qty);
     setOpenModal(false);
-    showAlert(ALERTS.productAdded);
+    toast.success(ALERTS.productAdded.message);
   };
 
   return (
@@ -90,7 +90,6 @@ function ModalComponent({ product }) {
           </button>
         </div>
       </Modal>
-
     </>
   );
 }

@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import Modal from "react-modal";
-import { CartContext } from "../../contexts/CartContext";
 import { SectionContext } from "../../contexts/SectionContext";
-import { ALERTS, USER_TYPES } from "../../constants/constants";
+import { ALERTS } from "../../constants/constants";
 import WelcomeComponente from "../banners/WelcomeComponent";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import AlertComponent from "../general/AlertComponent";
 
 function LoginComponent() {
   Modal.setAppElement("#root");
@@ -15,8 +16,11 @@ function LoginComponent() {
   const [pass, setPass] = useState("");
   const { loginAdmin } = useContext(UserContext);
   const [showError, setShowError] = useState(false);
-  const { showAlert, setSessionSection } = useContext(SectionContext);
+  const { setSessionSection } = useContext(SectionContext);
   const navigate = useNavigate();
+  const [usedUser, setUsedUser] = useState(false);
+  const [usedPass, setUsedPass] = useState(false);
+  const validForm = userName.trim() !== "" && pass.trim() !== "";
 
   const modalStyles = {
     content: {
@@ -46,10 +50,16 @@ function LoginComponent() {
     } else {
       setShowError(false);
       setOpenModal(false);
-      showAlert(ALERTS.loginOk);
       setSessionSection("Admin");
       navigate("/admin");
     }
+    toast.success(ALERTS.loginOk.message);
+  };
+
+  const changeMode = () => {
+    setUsedPass(false);
+    setUsedUser(false);
+    setIsAdmin((prev) => !prev);
   };
 
   return (
@@ -75,6 +85,7 @@ function LoginComponent() {
               {ALERTS.failedLogin.message}
             </div>
           )}
+          <div>{!validForm && usedUser && usedPass && <AlertComponent />}</div>
 
           {!isAdmin ? (
             <WelcomeComponente />
@@ -86,6 +97,7 @@ function LoginComponent() {
                   type="text"
                   className="form-control"
                   onChange={(e) => setUserName(e.target.value)}
+                  onBlur={() => setUsedUser(true)}
                 />
               </div>
               <div className="mb-3">
@@ -95,12 +107,13 @@ function LoginComponent() {
                   className="form-control"
                   placeholder="••••••"
                   onChange={(e) => setPass(e.target.value)}
+                  onBlur={() => setUsedPass(true)}
                 />
               </div>
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={pass == "" || userName == ""}
+                disabled={!validForm}
               >
                 Ingresar
               </button>
@@ -110,7 +123,7 @@ function LoginComponent() {
           <div className="form-check my-2 d-flex align-items-center justify-content-end gap-3 mx-3">
             <p
               className="text-primary mt-3 link mx-3"
-              onClick={() => setIsAdmin((prev) => !prev)}
+              onClick={() => changeMode()}
             >
               {isAdmin
                 ? "O continuar como cliente"

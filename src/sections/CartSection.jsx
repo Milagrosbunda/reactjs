@@ -2,14 +2,13 @@ import { CartContext, useSessionCart } from "../contexts/CartContext";
 import WelcomeComponente from "../components/banners/WelcomeComponent";
 import { useContext } from "react";
 import { ALERTS } from "../constants/constants";
-import { SectionContext } from "../contexts/SectionContext";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function CartSection() {
   const { sessionCart } = useSessionCart();
   const { updateCart } = useContext(CartContext);
-  const { showAlert } = useContext(SectionContext);
   const { userName } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -25,18 +24,18 @@ function CartSection() {
   const changeQty = (index, newQty) => {
     if (newQty > 10) {
       newQty = 10;
-      showAlert(ALERTS.qtyUpdated);
+      toast.info(ALERTS.qtyUpdated.message);
     }
     const updatedValue = [...sessionCart.products];
     updatedValue[index].qty = newQty;
     updateCart(updatedValue);
-    showAlert(ALERTS.successUpdated);
+    toast.success(ALERTS.successUpdated.message);
   };
 
   const removeProduct = (index) => {
     const updatedList = sessionCart.products.filter((_, i) => i !== index);
     updateCart(updatedList);
-    showAlert(ALERTS.deletedEntry);
+    toast.success(ALERTS.deletedEntry.message);
   };
 
   if (!sessionCart || sessionCart.products.length === 0) {
@@ -45,7 +44,6 @@ function CartSection() {
 
   return (
     <div className="container mt-4">
-      {console.log(sessionCart.products)}
       <h2 className="mb-4">Carrito de compras</h2>
       <div className="row">
         <div className="col-md-8">
@@ -78,7 +76,9 @@ function CartSection() {
                       {product.name}
                     </strong>
                     <br />
-                    <small>Precio unitario: ${parseFloat(product.price).toFixed(2)}</small>
+                    <small>
+                      Precio unitario: ${parseFloat(product.price).toFixed(2)}
+                    </small>
                   </div>
                 </div>
 

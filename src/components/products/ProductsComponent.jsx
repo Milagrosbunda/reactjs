@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ModalComponent from "../cart/ModalComponent";
 import { SectionContext } from "../../contexts/SectionContext";
 import { useNavigate } from "react-router-dom";
@@ -8,13 +8,14 @@ import {
   getPromoProducts,
 } from "../../contexts/API";
 import { ERRORS, PRODUCT_REQUEST } from "../../constants/constants";
+import { toast } from "react-toastify";
 
 const ProductsComponent = ({ title, type }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
   const [products, setProducts] = useState([]);
+  const [suggestions, setSuggestions] = useState(false);
 
   useEffect(() => {
     let fetchData;
@@ -47,16 +48,18 @@ const ProductsComponent = ({ title, type }) => {
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         switch (error.status) {
           case 404:
             setError(ERRORS.NOT_FOUND);
+            setSuggestions(true);
             break;
           case 500:
             setError(ERRORS.FAILED);
+            toast.error(ERRORS.GENERAL);
             break;
           default:
             setError(ERRORS.GENERAL);
+            toast.error(ERRORS.GENERAL);
             break;
         }
         setLoading(false);
@@ -68,7 +71,22 @@ const ProductsComponent = ({ title, type }) => {
   }
 
   if (error) {
-    return <h4 className="m-5">🚨 {error} 🚨</h4>;
+    return (
+      <>
+        <h4 className="m-5">🚨 {error} 🚨</h4>
+        <div class="col w-100">
+          <ProductsComponent type={PRODUCT_REQUEST.LIMITED} title="Quizas te puede interesar..." />
+          <button
+            style={{ width: "100%" }}
+            type="button"
+            className="btn btn-primary"
+            onClick={() => navigate("/products")}
+          >
+            Ver todos los productos
+          </button>
+        </div>
+      </>
+    );
   }
 
   return (

@@ -1,14 +1,22 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { ALERTS, USER_TYPES } from "../constants/constants";
+import { toast } from "react-toastify";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [userType, setUserType] = useState(null);
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
+  const [userType, setUserType] = useState(() =>
+    localStorage.getItem("userType")
+  );
+  const [userName, setUserName] = useState(
+    () => localStorage.getItem("userName") || ""
+  );
+  const [userEmail, setUserEmail] = useState(
+    () => localStorage.getItem("userEmail") || ""
+  );
 
   const setSessionUser = (name, email) => {
+    toast.success(name == "" ? ALERTS.logOut.message : ALERTS.loginOk.message);
     setUserName(name);
     setUserEmail(email);
     setUserType(null);
@@ -22,6 +30,12 @@ export const UserProvider = ({ children }) => {
     }
     return false;
   };
+
+  useEffect(() => {
+    localStorage.setItem("userType", userType || "");
+    localStorage.setItem("userName", userName);
+    localStorage.setItem("userEmail", userEmail);
+  }, [userType, userName, userEmail]);
 
   return (
     <UserContext.Provider
