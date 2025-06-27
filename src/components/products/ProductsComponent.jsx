@@ -1,39 +1,52 @@
 import React, { useState, useEffect } from "react";
 import ModalComponent from "../cart/ModalComponent";
-import { SectionContext } from "../../contexts/SectionContext";
 import { useNavigate } from "react-router-dom";
 import {
   getProducts,
-  getLimitedProducts,
   getPromoProducts,
+  getProductsSize,
+  searchProducts,
 } from "../../contexts/API";
 import { ERRORS, PRODUCT_REQUEST } from "../../constants/constants";
 import { toast } from "react-toastify";
+import PaginationComponent from "../general/PaginationComponent";
 
-const ProductsComponent = ({ title, type }) => {
+const ProductsComponent = ({ title, type, term }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [suggestions, setSuggestions] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 9;
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    let fetchData;
-    switch (type) {
-      case PRODUCT_REQUEST.FULL:
-        fetchData = getProducts();
-        break;
-      case PRODUCT_REQUEST.LIMITED:
-        fetchData = getLimitedProducts(3);
-        break;
-      case PRODUCT_REQUEST.PROMOS:
-        fetchData = getPromoProducts();
-        break;
-      default:
-        fetchData = Promise.resolve([]);
-    }
-    fetchData
-      .then((data) => {
+    setError(null);
+    const fetchData = async () => {
+      setLoading(true);
+      let total = 0;
+      let data = [];
+
+      try {
+        switch (type) {
+          case PRODUCT_REQUEST.FULL:
+            total = await getProductsSize();
+            setTotalPages(Math.ceil(total / limit));
+            data = await getProducts(limit, currentPage);
+            break;
+          case PRODUCT_REQUEST.LIMITED:
+            data = await getProducts(3);
+            break;
+          case PRODUCT_REQUEST.PROMOS:
+            data = await getPromoProducts();
+            break;
+          case PRODUCT_REQUEST.SEARCH:
+            if (term != "") data = await searchProducts(term);
+            break;
+          default:
+            data = [];
+        }
         const results = data.map((product) => ({
           code: product.id,
           name: product.name,
@@ -45,9 +58,7 @@ const ProductsComponent = ({ title, type }) => {
           (a, b) => Number(b.code) - Number(a.code)
         );
         setProducts(sortedData);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         switch (error.status) {
           case 404:
             setError(ERRORS.NOT_FOUND);
@@ -62,9 +73,16 @@ const ProductsComponent = ({ title, type }) => {
             toast.error(ERRORS.GENERAL);
             break;
         }
+      } finally {
         setLoading(false);
-      });
-  }, []);
+      }
+    };
+    fetchData();
+  }, [currentPage, type, term]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   if (loading) {
     return <div className="m-5">⏳ Cargando... ⏳</div>;
@@ -75,7 +93,10 @@ const ProductsComponent = ({ title, type }) => {
       <>
         <h4 className="m-5">🚨 {error} 🚨</h4>
         <div class="col w-100">
-          <ProductsComponent type={PRODUCT_REQUEST.LIMITED} title="Quizas te puede interesar..." />
+          <ProductsComponent
+            type={PRODUCT_REQUEST.LIMITED}
+            title="Quizas te puede interesar..."
+          />
           <button
             style={{ width: "100%" }}
             type="button"
@@ -114,6 +135,14 @@ const ProductsComponent = ({ title, type }) => {
             </div>
           ))}
         </div>
+
+        {type == PRODUCT_REQUEST.FULL && (
+          <PaginationComponent
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        )}
       </div>
     </>
   );

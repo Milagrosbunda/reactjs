@@ -3,6 +3,7 @@ const BASE_URL = new URL(
 );
 const HEADER = { "Content-Type": "application/json" };
 function handleResponse(response) {
+  console.log(response)
   if (!response.ok) {
     const error = new Error("HTTP error");
     error.status = response.status;
@@ -28,13 +29,19 @@ export const updateProduct = (id, product) =>
     body: JSON.stringify(product),
   });
 
-export const getProducts = () =>
+export const getAllProducts = () =>
   fetch(`${BASE_URL}`).then((res) => {
     return handleResponse(res);
   });
 
-export const getLimitedProducts = (maxQty) =>
-  fetch(`${BASE_URL}?page=1&limit=${maxQty}`).then((res) => {
+export const getProductsSize = async () => {
+  const response = await fetch(`${BASE_URL}`);
+  const data = await response.json();
+  return data.length;
+};
+
+export const getProducts = (limit = 3, page = 1) =>
+  fetch(`${BASE_URL}?limit=${limit}&page=${page}`).then((res) => {
     return handleResponse(res);
   });
 
@@ -46,5 +53,10 @@ export const getProduct = (id) => {
 
 export const getPromoProducts = () =>
   fetch(`${BASE_URL}?hasPromo=true`).then((res) => {
+    return handleResponse(res);
+  });
+
+export const searchProducts =  (input) =>
+  fetch(`${BASE_URL}?limit=3&search=${input}`).then((res) => {
     return handleResponse(res);
   });

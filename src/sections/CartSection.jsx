@@ -53,26 +53,27 @@ function CartSection() {
         <h2 className="mb-4">
           <RiShoppingBasket2Line /> Carrito de compras <RiShoppingBasket2Line />
         </h2>
-        <div className="row">
-          <div className="col-md-8">
-            <ul className="list-group mb-3">
+
+        <div className="row gy-4">
+          <div className="col-12 col-md-8 order-md-1">
+            <ul className="list-group">
               {sessionCart.products.map((product, index) => (
                 <li
                   key={index}
-                  className="list-group-item d-flex justify-content-between align-items-center"
+                  className="list-group-item d-flex justify-content-between align-items-center flex-wrap"
                 >
-                  <div className="d-flex align-items-center">
+                  <div className="d-flex align-items-center col-12 col-md-6 mb-2 mb-md-0">
                     <img
                       src={product.image}
                       alt={product.name}
+                      className="me-2"
                       style={{
                         width: 60,
                         height: 60,
                         objectFit: "cover",
-                        marginRight: 10,
                       }}
                     />
-                    <div className="text-start">
+                    <div>
                       <strong
                         className="link-name"
                         onClick={() =>
@@ -90,7 +91,7 @@ function CartSection() {
                     </div>
                   </div>
 
-                  <div className="d-flex align-items-center">
+                  <div className="d-flex align-items-center col-12 col-md-6 justify-content-md-end">
                     <input
                       type="number"
                       min="1"
@@ -102,19 +103,12 @@ function CartSection() {
                       className="form-control form-control-sm mx-2"
                       style={{ width: "70px" }}
                     />
-
-                    <span className="mx-2">
-                      <strong>
-                        {" "}
-                        ${(product.price * product.qty).toFixed(2)}
-                      </strong>
+                    <span className="mx-2 fw-bold">
+                      ${(product.price * product.qty).toFixed(2)}
                     </span>
-
                     <button
                       className="btn btn-outline-danger btn-sm"
                       onClick={() => removeProduct(index)}
-                      title="Eliminar del carrito"
-                      aria-label="Eliminar del carrito"
                     >
                       <FaTrash />
                     </button>
@@ -124,7 +118,7 @@ function CartSection() {
             </ul>
           </div>
 
-          <div className="col-md-4">
+          <div className="col-12 col-md-4 order-md-2">
             <div className="bg-light p-3 border rounded">
               <h5 className="mb-3">
                 <FaReceipt /> Resumen de compra
@@ -148,11 +142,11 @@ function CartSection() {
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="row mt-4">
-            <div className="col-12">
-              <WelcomeComponente />
-            </div>
+        <div className="row mt-4">
+          <div className="col-12">
+            <WelcomeComponente />
           </div>
         </div>
       </div>

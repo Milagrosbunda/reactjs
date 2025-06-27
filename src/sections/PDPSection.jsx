@@ -5,6 +5,27 @@ import { useParams } from "react-router-dom";
 import { getProduct } from "../contexts/API";
 import { toast } from "react-toastify";
 import SEOComponent from "../components/general/SEOComponent";
+import styled from "styled-components";
+
+const Container = styled.div`
+  padding: 3rem 1rem;
+`;
+
+const ProductImg = styled.img`
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+`;
+
+const QtyInput = styled.input`
+  width: 80px;
+  margin-left: 1rem;
+`;
+
+const Price = styled.h4`
+  font-weight: bold;
+  color: #333;
+`;
 
 function PDPSection() {
   const { id } = useParams();
@@ -47,14 +68,10 @@ function PDPSection() {
   return (
     <>
       <SEOComponent title={product.name} description={product.description} />
-      <div className="container py-5">
+      <Container className="container">
         <div className="row">
           <div className="col-md-6 text-center">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="img-fluid rounded"
-            />
+            <ProductImg src={product.image} alt={product.name} />
           </div>
           <div className="col-md-6">
             <h2>{product.name}</h2>
@@ -62,17 +79,17 @@ function PDPSection() {
               {product.description ||
                 "No contamos con información sobre este artículo. Contactate con nuestro soporte para más información."}
             </p>
-            <h4>${parseFloat(product.price)}</h4> <p>Precio unitario</p>
+            <Price>${parseFloat(product.price).toFixed(2)}</Price>
+            <p>Precio unitario</p>
             <div className="d-flex align-items-center justify-content-center my-3">
               <label htmlFor="qty" className="me-2">
                 Cantidad:
               </label>
-              <input
+              <QtyInput
                 type="number"
                 id="qty"
                 min="1"
                 max="10"
-                className="form-control w-25"
                 value={qty}
                 onChange={(e) => checkQtyInput(Number(e.target.value))}
               />
@@ -86,7 +103,7 @@ function PDPSection() {
             </button>
           </div>
         </div>
-      </div>
+      </Container>
     </>
   );
 }
