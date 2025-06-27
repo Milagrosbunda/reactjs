@@ -19,6 +19,7 @@ export const PRODUCT_REQUEST = {
   LIMITED: "LIMITED",
   FULL: "FULL",
   PROMOS: "PROMOS",
+  SEARCH: "SEARCH",
 };
 
 export const ERRORS = {

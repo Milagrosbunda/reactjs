@@ -93,8 +93,6 @@ function NavBarComponent() {
           </form>
         </div>
       </nav>
-
-      <AlertComponent />
     </>
   );
 }

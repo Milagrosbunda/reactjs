@@ -14,12 +14,10 @@ import { PRODUCT_REQUEST } from "./constants/constants";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 function App() {
   return (
     <>
       <div className="d-flex flex-column min-vh-100">
-
         <ToastContainer
           position="top-right"
           autoClose={3000}
