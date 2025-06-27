@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import Modal from "react-modal";
 import { SectionContext } from "../../contexts/SectionContext";
-import { ALERTS } from "../../constants/constants";
+import { ALERTS, MODAL_STYLES } from "../../constants/constants";
 import WelcomeComponente from "../banners/WelcomeComponent";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -21,26 +21,6 @@ function LoginComponent() {
   const [usedUser, setUsedUser] = useState(false);
   const [usedPass, setUsedPass] = useState(false);
   const validForm = userName.trim() !== "" && pass.trim() !== "";
-
-  const modalStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      padding: "2rem 2rem 1rem 2rem",
-      width: "40%",
-      textAlign: "center",
-      borderRadius: "50px",
-      backgroundColor: "rgb(250, 249, 198)",
-    },
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      zIndex: 1000,
-    },
-  };
 
   const loginAsAdmin = (e) => {
     if (!loginAdmin(userName, pass)) {
@@ -77,7 +57,7 @@ function LoginComponent() {
         isOpen={openModal}
         onRequestClose={() => setOpenModal(false)}
         contentLabel="Ya casi estamos..."
-        style={modalStyles}
+        style={MODAL_STYLES}
       >
         <div>
           {showError && (

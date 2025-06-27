@@ -5,6 +5,10 @@ import { ALERTS } from "../constants/constants";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaTrash } from "react-icons/fa";
+import { FaReceipt } from "react-icons/fa6";
+import { RiShoppingBasket2Line } from "react-icons/ri";
+import SEOComponent from "../components/general/SEOComponent";
 
 function CartSection() {
   const { sessionCart } = useSessionCart();
@@ -43,106 +47,116 @@ function CartSection() {
   }
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Carrito de compras</h2>
-      <div className="row">
-        <div className="col-md-8">
-          <ul className="list-group mb-3">
-            {sessionCart.products.map((product, index) => (
-              <li
-                key={index}
-                className="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <div className="d-flex align-items-center">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    style={{
-                      width: 60,
-                      height: 60,
-                      objectFit: "cover",
-                      marginRight: 10,
-                    }}
-                  />
-                  <div className="text-start">
-                    <strong
-                      className="link-name"
-                      onClick={() =>
-                        navigate(`/product/${product.code}`, {
-                          state: { product },
-                        })
-                      }
-                    >
-                      {product.name}
-                    </strong>
-                    <br />
-                    <small>
-                      Precio unitario: ${parseFloat(product.price).toFixed(2)}
-                    </small>
+    <>
+      <SEOComponent title="Cart" />
+      <div className="container mt-4">
+        <h2 className="mb-4">
+          <RiShoppingBasket2Line /> Carrito de compras <RiShoppingBasket2Line />
+        </h2>
+        <div className="row">
+          <div className="col-md-8">
+            <ul className="list-group mb-3">
+              {sessionCart.products.map((product, index) => (
+                <li
+                  key={index}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <div className="d-flex align-items-center">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        objectFit: "cover",
+                        marginRight: 10,
+                      }}
+                    />
+                    <div className="text-start">
+                      <strong
+                        className="link-name"
+                        onClick={() =>
+                          navigate(`/product/${product.code}`, {
+                            state: { product },
+                          })
+                        }
+                      >
+                        {product.name}
+                      </strong>
+                      <br />
+                      <small>
+                        Precio unitario: ${parseFloat(product.price).toFixed(2)}
+                      </small>
+                    </div>
                   </div>
-                </div>
 
-                <div className="d-flex align-items-center">
-                  <input
-                    type="number"
-                    min="1"
-                    max="10"
-                    value={product.qty}
-                    onChange={(e) => changeQty(index, parseInt(e.target.value))}
-                    className="form-control form-control-sm mx-2"
-                    style={{ width: "70px" }}
-                  />
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="number"
+                      min="1"
+                      max="10"
+                      value={product.qty}
+                      onChange={(e) =>
+                        changeQty(index, parseInt(e.target.value))
+                      }
+                      className="form-control form-control-sm mx-2"
+                      style={{ width: "70px" }}
+                    />
 
-                  <span className="mx-2">
-                    <strong>
-                      {" "}
-                      ${(product.price * product.qty).toFixed(2)}
-                    </strong>
-                  </span>
+                    <span className="mx-2">
+                      <strong>
+                        {" "}
+                        ${(product.price * product.qty).toFixed(2)}
+                      </strong>
+                    </span>
 
-                  <button
-                    className="btn btn-outline-danger btn-sm"
-                    onClick={() => removeProduct(index)}
-                    title="Eliminar del carrito"
-                  >
-                    🗑️
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                    <button
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={() => removeProduct(index)}
+                      title="Eliminar del carrito"
+                      aria-label="Eliminar del carrito"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="col-md-4">
-          <div className="bg-light p-3 border rounded">
-            <h5 className="mb-3">Resumen de compra</h5>
-            <div className="d-flex justify-content-between">
-              <span>Subtotal:</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
-            <div className="d-flex justify-content-between">
-              <span>Envío:</span>
-              <span>${shipping.toFixed(2)}</span>
-            </div>
-            <div className="d-flex justify-content-between">
-              <span>Descuento:</span>
-              <span>${discount.toFixed(2)}</span>
-            </div>
-            <hr />
-            <div className="d-flex justify-content-between fw-bold">
-              <span>Total:</span>
-              <span>${total.toFixed(2)}</span>
+          <div className="col-md-4">
+            <div className="bg-light p-3 border rounded">
+              <h5 className="mb-3">
+                <FaReceipt /> Resumen de compra
+              </h5>
+              <div className="d-flex justify-content-between">
+                <span>Subtotal:</span>
+                <span>${subtotal.toFixed(2)}</span>
+              </div>
+              <div className="d-flex justify-content-between">
+                <span>Envío:</span>
+                <span>${shipping.toFixed(2)}</span>
+              </div>
+              <div className="d-flex justify-content-between">
+                <span>Descuento:</span>
+                <span>${discount.toFixed(2)}</span>
+              </div>
+              <hr />
+              <div className="d-flex justify-content-between fw-bold">
+                <span>Total:</span>
+                <span>${total.toFixed(2)}</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="row mt-4">
-          <div className="col-12">
-            <WelcomeComponente />
+          <div className="row mt-4">
+            <div className="col-12">
+              <WelcomeComponente />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

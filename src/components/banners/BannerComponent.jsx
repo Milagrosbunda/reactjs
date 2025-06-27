@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaAnglesDown, FaAnglesUp } from "react-icons/fa6";
 
 function Banner({ title, info, desc, image }) {
   const showText = "Conocer mas";
@@ -28,7 +29,7 @@ function Banner({ title, info, desc, image }) {
         </div>
 
         <button className="btn btn-primary" onClick={hideInfo}>
-          {showButton}
+          {showInfo ? <FaAnglesUp /> : <FaAnglesDown />} {showButton}
         </button>
       </div>
     </>

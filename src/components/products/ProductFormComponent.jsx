@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ALERTS, ERRORS } from "../../constants/constants";
+import { ALERTS, ERRORS, MODAL_STYLES } from "../../constants/constants";
 import {
   getProducts,
   updateProduct,
@@ -7,6 +7,10 @@ import {
   deleteProductById,
 } from "../../contexts/API";
 import { toast } from "react-toastify";
+import Modal from "react-modal";
+import { FaTrash, FaEdit } from "react-icons/fa";
+import { FaRocket } from "react-icons/fa6";
+
 
 const ProductFormComponent = () => {
   const [name, setName] = useState("");
@@ -16,6 +20,8 @@ const ProductFormComponent = () => {
   const [hasPromo, setHasPromo] = useState(false);
   const [products, setProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
   const formPosition = useRef(null);
 
   const submitForm = async () => {
@@ -73,11 +79,17 @@ const ProductFormComponent = () => {
   const deleteProduct = async (id) => {
     try {
       await deleteProductById(id);
+      setOpenModal(false);
       toast.success(ALERTS.productDeleted.message);
       fetchProducts();
     } catch {
       toast.error(ERRORS.GENERAL);
     }
+  };
+
+  const deleteOption = (id) => {
+    setOpenModal(true);
+    setDeleteId(id);
   };
 
   useEffect(() => {
@@ -158,7 +170,7 @@ const ProductFormComponent = () => {
                     onChange={(e) => setHasPromo(e.target.checked)}
                   />
                   <label className="form-check-label" htmlFor="promoInput">
-                    ⚡ Promocionar
+                    <FaRocket/> Promocionar
                   </label>
                 </div>
               </div>
@@ -220,21 +232,43 @@ const ProductFormComponent = () => {
                           className="btn btn-sm btn-info m-2"
                           onClick={() => editProduct(product)}
                         >
-                          Editar
+                          <FaEdit /> Editar
                         </button>
                       </td>
                       <td>
                         <button
                           className="btn btn-sm btn-danger m-2"
-                          onClick={() => deleteProduct(product.id)}
+                          onClick={() => deleteOption(product.id)}
                         >
-                          Eliminar
+                          <FaTrash /> Eliminar
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+
+              <Modal
+                isOpen={openModal}
+                onRequestClose={() => setOpenModal(false)}
+                contentLabel="Confirmar..."
+                style={MODAL_STYLES}
+              >
+                <h3>Seguro queres eliminar este producto?</h3>
+                <p>‼️ Esta accion no puede revertirse ‼️</p>
+                <button
+                  className="btn btn-danger m-2"
+                  onClick={() => deleteProduct(deleteId)}
+                >
+                  Confirmar
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setOpenModal(false)}
+                >
+                  Cancelar
+                </button>
+              </Modal>
             </div>
           </div>
         </div>

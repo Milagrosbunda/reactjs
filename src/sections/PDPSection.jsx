@@ -4,6 +4,7 @@ import { ALERTS } from "../constants/constants";
 import { useParams } from "react-router-dom";
 import { getProduct } from "../contexts/API";
 import { toast } from "react-toastify";
+import SEOComponent from "../components/general/SEOComponent";
 
 function PDPSection() {
   const { id } = useParams();
@@ -45,6 +46,7 @@ function PDPSection() {
 
   return (
     <>
+      <SEOComponent title={product.name} description={product.description} />
       <div className="container py-5">
         <div className="row">
           <div className="col-md-6 text-center">
