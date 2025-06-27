@@ -11,11 +11,27 @@ import AdminSection from "./sections/AdminSection";
 import ProtectedRoute from "./contexts/ProtectedRoute";
 import PDPSection from "./sections/PDPSection";
 import { PRODUCT_REQUEST } from "./constants/constants";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 function App() {
   return (
     <>
       <div className="d-flex flex-column min-vh-100">
+
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+
         <NavBarComponent />
         <main className="flex-fill pt-5">
           <Routes>

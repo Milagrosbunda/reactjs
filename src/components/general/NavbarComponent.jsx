@@ -6,6 +6,8 @@ import { useSessionCart } from "../../contexts/CartContext";
 import AlertComponent from "./AlertComponent";
 import { Link } from "react-router-dom";
 import LoginComponent from "./LoginComponent";
+import { CgUserAdd } from "react-icons/cg";
+
 
 function NavBarComponent() {
   const { setSessionSection, loadCartPage, section } =
@@ -72,7 +74,7 @@ function NavBarComponent() {
               onClick={() => setSessionUser("")}
               className={"btn btn-primary" + (userName == "" ? " d-none" : "")}
             >
-              👪 {userName}
+              <CgUserAdd/> {userName}
             </button>
 
             {userName == "" && <LoginComponent />}

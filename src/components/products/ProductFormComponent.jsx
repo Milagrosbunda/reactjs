@@ -1,19 +1,18 @@
-import ProductsComponent from "./ProductsComponent";
-import { useContext, useEffect, useRef, useState } from "react";
-import { SectionContext } from "../../contexts/SectionContext";
-import { UserContext } from "../../contexts/UserContext";
-import { ALERTS } from "../../constants/constants";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { useEffect, useRef, useState } from "react";
+import { ALERTS, ERRORS, MODAL_STYLES } from "../../constants/constants";
 import {
   getProducts,
   updateProduct,
   createProduct,
   deleteProductById,
 } from "../../contexts/API";
+import { toast } from "react-toastify";
+import Modal from "react-modal";
+import { FaTrash, FaEdit } from "react-icons/fa";
+import { FaRocket } from "react-icons/fa6";
+
 
 const ProductFormComponent = () => {
-  const { showAlert } = useContext(SectionContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -21,19 +20,25 @@ const ProductFormComponent = () => {
   const [hasPromo, setHasPromo] = useState(false);
   const [products, setProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
   const formPosition = useRef(null);
 
   const submitForm = async () => {
-    const product = { name, description, price: parseFloat(price), hasPromo };
-    if (editingId) {
-      await updateProduct(editingId, product);
-      showAlert(ALERTS.productEdited);
-    } else {
-      await createProduct(product);
-      showAlert(ALERTS.productCreated);
+    try {
+      const product = { name, description, price: parseFloat(price), hasPromo };
+      if (editingId) {
+        await updateProduct(editingId, product);
+        toast.success(ALERTS.productEdited.message);
+      } else {
+        await createProduct(product);
+        toast.success(ALERTS.productCreated.message);
+      }
+      resetForm();
+      fetchProducts();
+    } catch {
+      toast.error(ERRORS.FORM_ERROR);
     }
-    resetForm();
-    fetchProducts();
   };
 
   const focusForm = () => {
@@ -52,9 +57,13 @@ const ProductFormComponent = () => {
   };
 
   const fetchProducts = async () => {
-    const data = await getProducts();
-    const sortedData = data.sort((a, b) => Number(b.id) - Number(a.id));
-    setProducts(sortedData);
+    try {
+      const data = await getProducts();
+      const sortedData = data.sort((a, b) => Number(b.id) - Number(a.id));
+      setProducts(sortedData);
+    } catch {
+      toast.error(ERRORS.FAILED);
+    }
   };
 
   const editProduct = (product) => {
@@ -68,9 +77,19 @@ const ProductFormComponent = () => {
   };
 
   const deleteProduct = async (id) => {
-    await deleteProductById(id);
-    showAlert(ALERTS.productDeleted);
-    fetchProducts();
+    try {
+      await deleteProductById(id);
+      setOpenModal(false);
+      toast.success(ALERTS.productDeleted.message);
+      fetchProducts();
+    } catch {
+      toast.error(ERRORS.GENERAL);
+    }
+  };
+
+  const deleteOption = (id) => {
+    setOpenModal(true);
+    setDeleteId(id);
   };
 
   useEffect(() => {
@@ -96,6 +115,7 @@ const ProductFormComponent = () => {
                 id="nameInput"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                placeholder="Nombre de tu producto..."
               />
             </div>
 
@@ -109,6 +129,8 @@ const ProductFormComponent = () => {
                 rows="2"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                minLength={10}
+                placeholder="Describe tu producto en al menos 10 caracteres..."
               ></textarea>
             </div>
             <div class="form-group">
@@ -122,6 +144,7 @@ const ProductFormComponent = () => {
                 rows="2"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
+                placeholder="Link a tu imagen..."
               ></input>
             </div>
 
@@ -147,7 +170,7 @@ const ProductFormComponent = () => {
                     onChange={(e) => setHasPromo(e.target.checked)}
                   />
                   <label className="form-check-label" htmlFor="promoInput">
-                    ⚡ Promocionar
+                    <FaRocket/> Promocionar
                   </label>
                 </div>
               </div>
@@ -158,7 +181,12 @@ const ProductFormComponent = () => {
             <button
               className="btn btn-primary"
               onClick={submitForm}
-              disabled={name === "" || description === "" || price <= 0}
+              disabled={
+                name === "" ||
+                description === "" ||
+                description.length <= 10 ||
+                price <= 0
+              }
             >
               {editingId ? "Guardar cambios" : "Enviar"}
             </button>
@@ -204,21 +232,43 @@ const ProductFormComponent = () => {
                           className="btn btn-sm btn-info m-2"
                           onClick={() => editProduct(product)}
                         >
-                          Editar
+                          <FaEdit /> Editar
                         </button>
                       </td>
                       <td>
                         <button
                           className="btn btn-sm btn-danger m-2"
-                          onClick={() => deleteProduct(product.id)}
+                          onClick={() => deleteOption(product.id)}
                         >
-                          Eliminar
+                          <FaTrash /> Eliminar
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+
+              <Modal
+                isOpen={openModal}
+                onRequestClose={() => setOpenModal(false)}
+                contentLabel="Confirmar..."
+                style={MODAL_STYLES}
+              >
+                <h3>Seguro queres eliminar este producto?</h3>
+                <p>‼️ Esta accion no puede revertirse ‼️</p>
+                <button
+                  className="btn btn-danger m-2"
+                  onClick={() => deleteProduct(deleteId)}
+                >
+                  Confirmar
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setOpenModal(false)}
+                >
+                  Cancelar
+                </button>
+              </Modal>
             </div>
           </div>
         </div>

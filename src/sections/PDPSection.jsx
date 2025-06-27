@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../contexts/CartContext";
-import { SectionContext } from "../contexts/SectionContext";
 import { ALERTS } from "../constants/constants";
 import { useParams } from "react-router-dom";
 import { getProduct } from "../contexts/API";
+import { toast } from "react-toastify";
+import SEOComponent from "../components/general/SEOComponent";
 
 function PDPSection() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [qty, setQty] = useState(1);
   const { addProduct, checkQty } = useContext(CartContext);
-  const { showAlert } = useContext(SectionContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,11 +41,12 @@ function PDPSection() {
 
   const addToCart = (product) => {
     addProduct(product, qty);
-    showAlert(ALERTS.productAdded);
+    toast.success(ALERTS.productAdded.message);
   };
 
   return (
     <>
+      <SEOComponent title={product.name} description={product.description} />
       <div className="container py-5">
         <div className="row">
           <div className="col-md-6 text-center">

@@ -9,15 +9,31 @@ export const CartProvider = ({ children }) => {
   const [sessionCart, setSessionCart] = useState(null);
 
   useEffect(() => {
-    if (!sessionCart) {
-      const cart = {
+    if (sessionCart) {
+      localStorage.setItem("cart", JSON.stringify(sessionCart));
+    }
+  }, [sessionCart]);
+
+  useEffect(() => {
+    if (!userName) {
+      localStorage.removeItem("cart");
+    }
+  }, [userName]);
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setSessionCart(JSON.parse(savedCart));
+    } else {
+      const initialCart = {
         id: 1,
         owner: userName,
         products: [],
       };
-      setSessionCart(cart);
+      setSessionCart(initialCart);
+      localStorage.setItem("cart", JSON.stringify(initialCart));
     }
-  }, [userName, sessionCart]);
+  }, [userName]);
 
   const checkQty = (qty) => {
     return qty <= 10 ? qty : 10;
@@ -58,7 +74,9 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ sessionCart, addProduct, updateCart, checkQty }}>
+    <CartContext.Provider
+      value={{ sessionCart, addProduct, updateCart, checkQty }}
+    >
       {children}
     </CartContext.Provider>
   );
