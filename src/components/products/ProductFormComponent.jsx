@@ -1,51 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import { ALERTS, ERRORS, MODAL_STYLES } from "../../constants/constants";
-import {
-  getProducts,
-  updateProduct,
-  createProduct,
-  deleteProductById,
-} from "../../contexts/API";
-import { toast } from "react-toastify";
-import Modal from "react-modal";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { FaRocket } from "react-icons/fa6";
 
-
-const ProductFormComponent = () => {
+const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState(0.0);
   const [hasPromo, setHasPromo] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [editingId, setEditingId] = useState(null);
-  const [deleteId, setDeleteId] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
-  const formPosition = useRef(null);
+  const invalidForm =
+    name === "" || description === "" || description.length <= 10 || price <= 0;
 
-  const submitForm = async () => {
-    try {
-      const product = { name, description, price: parseFloat(price), hasPromo };
-      if (editingId) {
-        await updateProduct(editingId, product);
-        toast.success(ALERTS.productEdited.message);
-      } else {
-        await createProduct(product);
-        toast.success(ALERTS.productCreated.message);
-      }
+  useEffect(() => {
+    if (initialProduct) {
+      setName(initialProduct.name);
+      setDescription(initialProduct.description);
+      setImage(initialProduct.image);
+      setPrice(initialProduct.price);
+      setHasPromo(initialProduct.hasPromo);
+    } else {
       resetForm();
-      fetchProducts();
-    } catch {
-      toast.error(ERRORS.FORM_ERROR);
     }
-  };
-
-  const focusForm = () => {
-    if (formPosition.current) {
-      formPosition.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  }, [initialProduct]);
 
   const resetForm = () => {
     setName("");
@@ -53,226 +28,118 @@ const ProductFormComponent = () => {
     setImage("");
     setHasPromo(false);
     setPrice(0.0);
-    setEditingId("");
   };
 
-  const fetchProducts = async () => {
-    try {
-      const data = await getProducts();
-      const sortedData = data.sort((a, b) => Number(b.id) - Number(a.id));
-      setProducts(sortedData);
-    } catch {
-      toast.error(ERRORS.FAILED);
-    }
+  const sumbmitForm = (e) => {
+    e.preventDefault();
+    const productData = {
+      name,
+      description,
+      image,
+      price: parseFloat(price),
+      hasPromo,
+    };
+    onSubmit(productData);
+    resetForm();
   };
 
-  const editProduct = (product) => {
-    setName(product.name);
-    setDescription(product.description);
-    setPrice(product.price);
-    setImage(product.image);
-    setHasPromo(product.hasPromo);
-    setEditingId(product.id);
-    focusForm();
+  const cancelForm = () => {
+    resetForm();
+    onCancel();
   };
-
-  const deleteProduct = async (id) => {
-    try {
-      await deleteProductById(id);
-      setOpenModal(false);
-      toast.success(ALERTS.productDeleted.message);
-      fetchProducts();
-    } catch {
-      toast.error(ERRORS.GENERAL);
-    }
-  };
-
-  const deleteOption = (id) => {
-    setOpenModal(true);
-    setDeleteId(id);
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   return (
     <>
-      <div className="product-card mt-5">
-        <div className="card">
-          <h3 className="card-title pt-4" ref={formPosition}>
-            🔍 Crear o editar producto
-          </h3>
+      <form onSubmit={sumbmitForm}>
+        <div className="form-group">
+          <label className="py-1" htmlFor="nameInput">
+            Nombre del producto:
+          </label>
+          <input
+            type="text"
+            className="form-control pt-3"
+            id="nameInput"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Nombre de tu producto..."
+          />
+        </div>
 
-          <form>
-            <div className="form-group">
-              <label className="py-1" for="nameInput">
-                Nombre del producto:
-              </label>
+        <div className="form-group">
+          <label className="pt-3 px-5" htmlFor="descInput">
+            Descripción:
+          </label>
+          <textarea
+            className="form-control pt-3"
+            id="descInput"
+            rows="2"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            minLength={10}
+            placeholder="Describe tu producto en al menos 10 caracteres..."
+          ></textarea>
+        </div>
+
+        <div className="form-group">
+          <label className="pt-3 px-5" htmlFor="imageInput">
+            URL de la imagen:
+          </label>
+          <input
+            type="text"
+            className="form-control pt-3"
+            id="imageInput"
+            rows="2"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            placeholder="Link a tu imagen..."
+          ></input>
+        </div>
+
+        <div className="form-group">
+          <label className="pt-3 px-5" htmlFor="priceInput">
+            Precio unitario:
+          </label>
+          <div className="d-flex align-items-center gap-3">
+            <input
+              type="number"
+              className="form-control price-input mt-3"
+              id="priceInput"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+
+            <div className="form-check">
               <input
-                type="text"
-                className="form-control pt-3"
-                id="nameInput"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Nombre de tu producto..."
+                className="form-check-input"
+                type="checkbox"
+                id="promoInput"
+                checked={hasPromo}
+                onChange={(e) => setHasPromo(e.target.checked)}
               />
-            </div>
-
-            <div class="form-group">
-              <label className="pt-3 px-5" for="descInput">
-                Descripcion:
+              <label className="form-check-label" htmlFor="promoInput">
+                <FaRocket /> Promocionar
               </label>
-              <textarea
-                className="form-control pt-3"
-                id="descInput"
-                rows="2"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                minLength={10}
-                placeholder="Describe tu producto en al menos 10 caracteres..."
-              ></textarea>
-            </div>
-            <div class="form-group">
-              <label className="pt-3 px-5" for="imageInput">
-                URL de la imagen:
-              </label>
-              <input
-                type="text"
-                className="form-control pt-3"
-                id="imageInput"
-                rows="2"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                placeholder="Link a tu imagen..."
-              ></input>
-            </div>
-
-            <div className="form-group">
-              <label className="pt-3 px-5" htmlFor="priceInput">
-                Precio unitario:
-              </label>
-              <div className="d-flex align-items-center gap-3">
-                <input
-                  type="number"
-                  className="form-control price-input mt-3"
-                  id="priceInput"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="promoInput"
-                    checked={hasPromo}
-                    onChange={(e) => setHasPromo(e.target.checked)}
-                  />
-                  <label className="form-check-label" htmlFor="promoInput">
-                    <FaRocket/> Promocionar
-                  </label>
-                </div>
-              </div>
-            </div>
-          </form>
-
-          <div className="py-4">
-            <button
-              className="btn btn-primary"
-              onClick={submitForm}
-              disabled={
-                name === "" ||
-                description === "" ||
-                description.length <= 10 ||
-                price <= 0
-              }
-            >
-              {editingId ? "Guardar cambios" : "Enviar"}
-            </button>
-            <button className="btn btn-secondary mx-3" onClick={resetForm}>
-              Cancelar
-            </button>
-          </div>
-
-          <div className="mt-4">
-            <h4>🛒 Productos existentes</h4>
-            <div className="table-responsive mx-2">
-              <table className="table table-bordered table-hover w-100 mx-auto mt-3">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col" colSpan="2">
-                      Opciones
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr>
-                      <td key={product.id}>
-                        <p className="m-2">
-                          <strong className="m-2">{product.name}</strong>
-                        </p>
-                      </td>
-                      <td>
-                        <p className="m-2">${product.price}</p>
-                      </td>
-                      <td>
-                        <img
-                          className="img-table"
-                          src={product.image}
-                          alt="Card image cap"
-                        ></img>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-sm btn-info m-2"
-                          onClick={() => editProduct(product)}
-                        >
-                          <FaEdit /> Editar
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-sm btn-danger m-2"
-                          onClick={() => deleteOption(product.id)}
-                        >
-                          <FaTrash /> Eliminar
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <Modal
-                isOpen={openModal}
-                onRequestClose={() => setOpenModal(false)}
-                contentLabel="Confirmar..."
-                style={MODAL_STYLES}
-              >
-                <h3>Seguro queres eliminar este producto?</h3>
-                <p>‼️ Esta accion no puede revertirse ‼️</p>
-                <button
-                  className="btn btn-danger m-2"
-                  onClick={() => deleteProduct(deleteId)}
-                >
-                  Confirmar
-                </button>
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => setOpenModal(false)}
-                >
-                  Cancelar
-                </button>
-              </Modal>
             </div>
           </div>
         </div>
-      </div>
+
+        <div className="py-4">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={invalidForm}
+          >
+            {initialProduct ? "Guardar cambios" : "Enviar"}
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary mx-3"
+            onClick={cancelForm}
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
     </>
   );
 };

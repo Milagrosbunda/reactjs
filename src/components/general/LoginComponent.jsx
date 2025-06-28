@@ -45,7 +45,7 @@ function LoginComponent() {
   return (
     <>
       <button
-        class="btn btn-primary"
+        className="btn btn-primary"
         type="button"
         title="Login"
         onClick={() => setOpenModal(true)}

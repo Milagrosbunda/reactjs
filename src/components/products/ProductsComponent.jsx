@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import ModalComponent from "../cart/ModalComponent";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import {
   getProducts,
   getPromoProducts,
@@ -10,11 +8,12 @@ import {
 import { ERRORS, PRODUCT_REQUEST } from "../../constants/constants";
 import { toast } from "react-toastify";
 import PaginationComponent from "../general/PaginationComponent";
+import SuggestionComponent from "./SuggestionComponent";
+import PLPComponent from "./PLPComponent";
 
 const ProductsComponent = ({ title, type, term }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [suggestions, setSuggestions] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -92,58 +91,21 @@ const ProductsComponent = ({ title, type, term }) => {
     return (
       <>
         <h4 className="m-5">🚨 {error} 🚨</h4>
-        <div class="col w-100">
-          <ProductsComponent
-            type={PRODUCT_REQUEST.LIMITED}
-            title="Quizas te puede interesar..."
-          />
-          <button
-            style={{ width: "100%" }}
-            type="button"
-            className="btn btn-primary"
-            onClick={() => navigate("/products")}
-          >
-            Ver todos los productos
-          </button>
-        </div>
+        <SuggestionComponent />
       </>
     );
   }
 
   return (
     <>
-      <div>
-        <h3 className="card-title p-3">{title}</h3>
-        <div className="card-group products-grid">
-          {products.map((product) => (
-            <div className="card">
-              <img
-                className="card-img-top product-img"
-                src={product.image}
-                alt="Card image cap"
-              ></img>
-              <div className="card-body">
-                <h5
-                  className="card-title product-title link-name"
-                  onClick={() => navigate(`/product/${product.code}`)}
-                >
-                  {product.name}
-                </h5>
-                <p className="card-text">${product.price}</p>
-                <ModalComponent product={product} />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {type == PRODUCT_REQUEST.FULL && (
-          <PaginationComponent
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        )}
-      </div>
+      <PLPComponent products={products} title={title} />
+      {type === PRODUCT_REQUEST.FULL && (
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      )}
     </>
   );
 };

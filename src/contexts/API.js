@@ -41,7 +41,7 @@ export const getProductsSize = async () => {
 };
 
 export const getProducts = (limit = 3, page = 1) =>
-  fetch(`${BASE_URL}?limit=${limit}&page=${page}`).then((res) => {
+  fetch(`${BASE_URL}?sortby=id&order=desc&limit=${limit}&page=${page}`).then((res) => {
     return handleResponse(res);
   });
 

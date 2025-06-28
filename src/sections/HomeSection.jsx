@@ -3,6 +3,7 @@ import PanelComponent from "../components/products/PanelComponent";
 import SEOComponent from "../components/general/SEOComponent";
 import { useState } from "react";
 import SearchSection from "./SearchSection";
+import SearchComponent from "../components/general/SearchComponent";
 
 function HomeSection() {
   const [showSearchComponent, setShowSearchComponent] = useState(false);
@@ -19,25 +20,19 @@ function HomeSection() {
 
       <div className="container pt-5">
         {showSearchComponent ? (
-          <SearchSection input={input} handleChange={setShowSearchComponent} setInput={setInput} />
+          <SearchSection
+            input={input}
+            handleChange={setShowSearchComponent}
+            setInput={setInput}
+          />
         ) : (
           <div className="row">
             <div className="col-12 col-md-4 mb-4">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">
-                    Buscar:
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Buscar"
-                  value={input}
-                  onChange={(e) => handleInput(e.target.value)}
-                />
-              </div>
-
+              <SearchComponent
+                handleChange={handleInput}
+                showButton={false}
+                searchTerm={input}
+              />
               <Banner
                 title={"🚀 Oferta especial"}
                 info="Aprovechá el 3x2"

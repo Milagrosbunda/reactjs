@@ -25,7 +25,7 @@ function ModalComponent({ product }) {
   return (
     <>
       <button
-        class="btn btn-primary"
+        className="btn btn-primary"
         type="button"
         onClick={() => setOpenModal(true)}
       >
@@ -43,9 +43,9 @@ function ModalComponent({ product }) {
           <h2>{product.name}</h2>
           <p>{product.description}</p>
           <h6>Precio unitario: </h6> <h3>${product.price}</h3>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Cantidad</span>
+          <div className="input-group mb-3">
+            <div className="input-group-prepend">
+              <span className="input-group-text">Cantidad</span>
             </div>
             <input
               className="form-control"
