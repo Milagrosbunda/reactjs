@@ -72,6 +72,10 @@ export const ALERTS = {
     type: "success",
     message: "📝 Producto eliminado correctamente.",
   },
+    emptySearch: {
+    type: "info",
+    message: "No se encontraron resultados para tu busqueda.",
+  },
 };
 
 export const MODAL_STYLES = {

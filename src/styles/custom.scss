@@ -99,6 +99,12 @@ button:hover,
   margin-left: 5%;
   width: 70%;
 }
-.input-group-text{
+.input-group-text {
   background-color: bootstrap.$light;
+}
+
+.clean-button {
+  border: 0px;
+  margin-right: 2%;
+  color: #454d66;
 }

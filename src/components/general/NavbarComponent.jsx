@@ -18,10 +18,10 @@ function NavBarComponent() {
 
   return (
     <>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top px-3">
-        <a class="navbar-brand">♍️ MarketPlace</a>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top px-3">
+        <a className="navbar-brand">♍️ MarketPlace</a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarSupportedContent"
@@ -29,16 +29,16 @@ function NavBarComponent() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
         <div
-          class="collapse navbar-collapse justify-content-between"
+          className="collapse navbar-collapse justify-content-between"
           id="navbarSupportedContent"
         >
-          <ul class="navbar-nav mr-auto">
+          <ul className="navbar-nav mr-auto">
             {Object.entries(SECTIONS).map(([key, value]) => (
-              <li class="nav-item">
+              <li className="nav-item" key={key}>
                 <Link
                   to={"/" + key}
                   className={
@@ -52,7 +52,7 @@ function NavBarComponent() {
               </li>
             ))}
             {userType && (
-              <li class="nav-item">
+              <li className="nav-item">
                 <Link
                   to={"/admin"}
                   className={
@@ -67,7 +67,7 @@ function NavBarComponent() {
             )}
           </ul>
 
-          <form class="form-inline my-2 my-lg-0">
+          <form className="form-inline my-2 my-lg-0">
             <button
               type="button"
               title="Cerrar sesion"
@@ -88,7 +88,7 @@ function NavBarComponent() {
               href="/cart"
             >
               Carrito de compras 🛍️
-              <span class="badge badge-success">{cartQty}</span>
+              <span className="badge badge-success">{cartQty}</span>
             </button>
           </form>
         </div>

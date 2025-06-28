@@ -9,7 +9,7 @@ function PaginationComponent({ currentPage, totalPages, onPageChange }) {
           className="btn btn-primary mx-2"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          aria-label="Anterior pagina"
+          aria-label="Anterior página"
         >
           <IoArrowBack />
         </button>
@@ -20,7 +20,7 @@ function PaginationComponent({ currentPage, totalPages, onPageChange }) {
           className="btn btn-primary mx-2"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          aria-label="Siguiente pagina"
+          aria-label="Siguiente página"
         >
           <GrLinkNext />
         </button>

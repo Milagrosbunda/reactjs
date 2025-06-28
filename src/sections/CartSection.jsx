@@ -5,10 +5,12 @@ import { ALERTS } from "../constants/constants";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaTrash } from "react-icons/fa";
+import { PiTrashFill } from "react-icons/pi";
 import { FaReceipt } from "react-icons/fa6";
 import { RiShoppingBasket2Line } from "react-icons/ri";
 import SEOComponent from "../components/general/SEOComponent";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import { IoRemoveCircleOutline } from "react-icons/io5";
 
 function CartSection() {
   const { sessionCart } = useSessionCart();
@@ -26,6 +28,7 @@ function CartSection() {
   const total = subtotal + shipping - discount;
 
   const changeQty = (index, newQty) => {
+    console.log(newQty);
     if (newQty > 10) {
       newQty = 10;
       toast.info(ALERTS.qtyUpdated.message);
@@ -63,6 +66,15 @@ function CartSection() {
                   className="list-group-item d-flex justify-content-between align-items-center flex-wrap"
                 >
                   <div className="d-flex align-items-center col-12 col-md-6 mb-2 mb-md-0">
+
+                    <button
+                      className="btn btn-outline-danger btn-sm clean-button"
+                      onClick={() => removeProduct(index)}
+                      aria-label="Eliminar producto del cart"
+                    >
+                      <PiTrashFill />
+                    </button>
+
                     <img
                       src={product.image}
                       alt={product.name}
@@ -92,6 +104,17 @@ function CartSection() {
                   </div>
 
                   <div className="d-flex align-items-center col-12 col-md-6 justify-content-md-end">
+                    <span className="mx-2 fw-bold">
+                      ${(product.price * product.qty).toFixed(2)}
+                    </span>
+                    <button
+                      className="btn btn-outline-success btn-sm"
+                      onClick={() => changeQty(index, product.qty - 1)}
+                      aria-label="Reducir unidad"
+                      disabled={product.qty == 1}
+                    >
+                      <IoRemoveCircleOutline />
+                    </button>
                     <input
                       type="number"
                       min="1"
@@ -101,16 +124,15 @@ function CartSection() {
                         changeQty(index, parseInt(e.target.value))
                       }
                       className="form-control form-control-sm mx-2"
-                      style={{ width: "70px" }}
+                      style={{ width: "10%" }}
                     />
-                    <span className="mx-2 fw-bold">
-                      ${(product.price * product.qty).toFixed(2)}
-                    </span>
                     <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => removeProduct(index)}
+                      className="btn btn-outline-success btn-sm"
+                      onClick={() => changeQty(index, product.qty + 1)}
+                      aria-label="Agregar unidad"
+                      disabled={product.qty == 10}
                     >
-                      <FaTrash />
+                      <IoMdAddCircleOutline />
                     </button>
                   </div>
                 </li>
