@@ -111,7 +111,7 @@ function LoginComponent() {
             </p>
 
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-outline-dark"
               onClick={() => setOpenModal(false)}
             >
               Cancelar

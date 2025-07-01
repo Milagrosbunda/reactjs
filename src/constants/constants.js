@@ -72,7 +72,7 @@ export const ALERTS = {
     type: "success",
     message: "📝 Producto eliminado correctamente.",
   },
-    emptySearch: {
+  emptySearch: {
     type: "info",
     message: "No se encontraron resultados para tu busqueda.",
   },
@@ -84,16 +84,17 @@ export const MODAL_STYLES = {
     left: "50%",
     right: "auto",
     bottom: "auto",
-    marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    padding: "2rem 2rem 1rem 2rem",
-    width: "40%",
-    textAlign: "center",
-    borderRadius: "50px",
-    backgroundColor: "rgb(250, 249, 198)",
+    width: "90%",
+    maxWidth: "500px",
+    padding: "2rem",
+    borderRadius: "1rem",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+    backgroundColor: "#fff",
+    border: "none",
   },
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
     zIndex: 1000,
   },
 };

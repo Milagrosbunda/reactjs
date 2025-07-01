@@ -1,7 +1,13 @@
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { FaRocket } from "react-icons/fa6";
 
-const ProductsTableComponent = ({ products, onEdit, onDelete }) => {
+const ProductsTableComponent = ({
+  products,
+  onEdit,
+  onDelete,
+  onPromoAction,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -12,7 +18,7 @@ const ProductsTableComponent = ({ products, onEdit, onDelete }) => {
             <th scope="col">Nombre</th>
             <th scope="col">Precio</th>
             <th scope="col">Imagen</th>
-            <th scope="col" colSpan="2">
+            <th scope="col" colSpan="3">
               Opciones
             </th>
           </tr>
@@ -50,6 +56,15 @@ const ProductsTableComponent = ({ products, onEdit, onDelete }) => {
                   onClick={() => onEdit(product)}
                 >
                   <FaEdit /> Editar
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-sm btn-primary m-2"
+                  onClick={() => onPromoAction(product, !product.hasPromo)}
+                >
+                  <FaRocket />{" "}
+                  {product.hasPromo ? "Despromocionar" : "Promocionar"}
                 </button>
               </td>
               <td>

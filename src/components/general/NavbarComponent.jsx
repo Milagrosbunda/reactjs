@@ -3,11 +3,10 @@ import { UserContext } from "../../contexts/UserContext";
 import { SectionContext } from "../../contexts/SectionContext";
 import { SECTIONS } from "../../constants/constants";
 import { useSessionCart } from "../../contexts/CartContext";
-import AlertComponent from "./AlertComponent";
 import { Link } from "react-router-dom";
-import LoginComponent from "./LoginComponent";
 import { CgUserAdd } from "react-icons/cg";
-
+import { Navbar, Nav, Container, Button, Badge } from "react-bootstrap";
+import LoginComponent from "./LoginComponent";
 
 function NavBarComponent() {
   const { setSessionSection, loadCartPage, section } =
@@ -17,83 +16,65 @@ function NavBarComponent() {
   const cartQty = sessionCart?.products?.length || 0;
 
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top px-3">
-        <a className="navbar-brand">♍️ MarketPlace</a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div
-          className="collapse navbar-collapse justify-content-between"
-          id="navbarSupportedContent"
-        >
-          <ul className="navbar-nav mr-auto">
+    <Navbar bg="light" expand="lg" fixed="top" className="shadow-sm px-3">
+      <Container fluid>
+        <Navbar.Brand>♍️ MarketPlace</Navbar.Brand>
+        <Navbar.Toggle aria-controls="main-navbar" />
+        <Navbar.Collapse id="main-navbar">
+          <Nav className="me-auto">
             {Object.entries(SECTIONS).map(([key, value]) => (
-              <li className="nav-item" key={key}>
-                <Link
-                  to={"/" + key}
-                  className={
-                    "nav-link " + (section == value ? "active-section" : "")
-                  }
-                  key={value}
-                  onClick={() => setSessionSection(value)}
-                >
-                  {value}
-                </Link>
-              </li>
+              <Nav.Link
+                as={Link}
+                to={"/" + key}
+                key={key}
+                active={section === value}
+                onClick={() => setSessionSection(value)}
+              >
+                {value}
+              </Nav.Link>
             ))}
+
             {userType && (
-              <li className="nav-item">
-                <Link
-                  to={"/admin"}
-                  className={
-                    "nav-link " + (section == "Admin" ? "active-section" : "")
-                  }
-                  key="Admin"
-                  onClick={() => setSessionSection("Admin")}
-                >
-                  Gestionar productos
-                </Link>
-              </li>
+              <Nav.Link
+                as={Link}
+                to="/admin"
+                active={section === "Admin"}
+                onClick={() => setSessionSection("Admin")}
+              >
+                Gestionar productos
+              </Nav.Link>
             )}
-          </ul>
+          </Nav>
 
-          <form className="form-inline my-2 my-lg-0">
-            <button
-              type="button"
-              title="Cerrar sesion"
-              onClick={() => setSessionUser("")}
-              className={"btn btn-primary" + (userName == "" ? " d-none" : "")}
-            >
-              <CgUserAdd/> {userName}
-            </button>
+          <div className="d-flex align-items-center">
+            {userName ? (
+              <Button
+                variant="primary"
+                className="me-2"
+                title="Cerrar sesión"
+                onClick={() => setSessionUser("")}
+              >
+                <CgUserAdd className="me-1" />
+                {userName}
+              </Button>
+            ) : (
+              <LoginComponent />
+            )}
 
-            {userName == "" && <LoginComponent />}
-
-            <button
-              type="button"
-              className={
-                "cart-icon mx-3 btn btn-" + (cartQty === 0 ? "info" : "success")
-              }
+            <Button
+              variant={cartQty === 0 ? "info" : "success"}
+              className="ms-2"
               onClick={() => loadCartPage()}
-              href="/cart"
             >
-              Carrito de compras 🛍️
-              <span className="badge badge-success">{cartQty}</span>
-            </button>
-          </form>
-        </div>
-      </nav>
-    </>
+              Carrito de compras 🛍️{" "}
+              <Badge bg="success" className="ms-1">
+                {cartQty}
+              </Badge>
+            </Button>
+          </div>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 

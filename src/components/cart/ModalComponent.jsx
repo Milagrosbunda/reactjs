@@ -5,7 +5,6 @@ import { ALERTS, MODAL_STYLES } from "../../constants/constants";
 import { toast } from "react-toastify";
 import { CgAdd } from "react-icons/cg";
 
-
 function ModalComponent({ product }) {
   Modal.setAppElement("#root");
   const [openModal, setOpenModal] = useState(false);
@@ -29,7 +28,7 @@ function ModalComponent({ product }) {
         type="button"
         onClick={() => setOpenModal(true)}
       >
-        <CgAdd/> Agregar
+        <CgAdd /> Agregar
       </button>
 
       <Modal
@@ -38,39 +37,44 @@ function ModalComponent({ product }) {
         contentLabel="Ya casi estamos..."
         style={MODAL_STYLES}
       >
-        <div className="modal-products">
-          <h3>🛒 Agregar al carrito de compras: </h3>
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
-          <h6>Precio unitario: </h6> <h3>${product.price}</h3>
-          <div className="input-group mb-3">
+        <div className="modal-products container text-center">
+          <h3 className="mb-3">🛒 Agregar al carrito</h3>
+          <h4 className="mb-2">{product.name}</h4>
+          <p className="text-muted">{product.description}</p>
+          <h6 className="mt-3">Precio unitario:</h6>
+          <h3 className="mb-4 text-success">${product.price}</h3>
+
+          <div className="input-group mb-4 justify-content-center">
             <div className="input-group-prepend">
               <span className="input-group-text">Cantidad</span>
             </div>
             <input
               className="form-control"
+              style={{ maxWidth: "100px" }}
               id="qty"
               type="number"
               min="1"
               max="10"
-              defaultValue={1}
               value={qty}
               onChange={(e) => checkQtyInput(Number(e.target.value))}
             />
           </div>
-          <button
-            className="btn btn-dark"
-            onClick={() => addToCart(product)}
-            disabled={qty == ""}
-          >
-            Confirmar
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={() => setOpenModal(false)}
-          >
-            Cerrar
-          </button>
+
+          <div className="d-flex justify-content-center gap-3">
+            <button
+              className="btn btn-secondary"
+              onClick={() => addToCart(product)}
+              disabled={!qty}
+            >
+              Confirmar
+            </button>
+            <button
+              className="btn btn-dark"
+              onClick={() => setOpenModal(false)}
+            >
+              Cancelar
+            </button>
+          </div>
         </div>
       </Modal>
     </>
