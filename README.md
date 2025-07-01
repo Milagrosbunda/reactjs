@@ -1,13 +1,37 @@
-# React + Vite
+# Marketplace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Intro
+Aplicacion web de ecommerce para curso de React.
 
-Currently, two official plugins are available:
+### Autor
+Milagros Bunda.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Deployment activo
+https://reactjs-two-mu.vercel.app/
 
-## Expanding the ESLint configuration
+## Estructura 
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# reactjs
+### Tecnologias
+- React
+- Bootstrap
+- Context API
+- Router
+- Fetch
+- Toastify
+- MockAPI
+
+### Funcionalidades
+- CRUD de productos
+- Busqueda de productos
+- Creacion y edicion de carrito de compras
+- Paginacion
+
+### Accesos de administrador
+- user: admin
+- password: nimda
+
+## Instalacion
+1. Clonar repositorio:  gh repo clone Milagrosbunda/reactjs
+2. Instalar dependencias: npm install
+3. Levantar proyecto: npm start
+

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { FaRocket } from "react-icons/fa6";
 
 const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
   const [name, setName] = useState("");
@@ -57,7 +56,7 @@ const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
           </label>
           <input
             type="text"
-            className="form-control pt-3"
+            className="form-control mt-3"
             id="nameInput"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -70,7 +69,7 @@ const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
             Descripción:
           </label>
           <textarea
-            className="form-control pt-3"
+            className="form-control mt-3"
             id="descInput"
             rows="2"
             value={description}
@@ -86,7 +85,7 @@ const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
           </label>
           <input
             type="text"
-            className="form-control pt-3"
+            className="form-control mt-3"
             id="imageInput"
             rows="2"
             value={image}
@@ -99,28 +98,13 @@ const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
           <label className="pt-3 px-5" htmlFor="priceInput">
             Precio unitario:
           </label>
-          <div className="d-flex align-items-center gap-3">
-            <input
-              type="number"
-              className="form-control price-input mt-3"
-              id="priceInput"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="promoInput"
-                checked={hasPromo}
-                onChange={(e) => setHasPromo(e.target.checked)}
-              />
-              <label className="form-check-label" htmlFor="promoInput">
-                <FaRocket /> Promocionar
-              </label>
-            </div>
-          </div>
+          <input
+            type="number"
+            className="form-control mt-3"
+            id="priceInput"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
         </div>
 
         <div className="py-4">

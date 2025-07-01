@@ -25,10 +25,11 @@ const AdminSection = () => {
   const limit = 5;
   const [totalPages, setTotalPages] = useState(1);
   const [input, setInput] = useState("");
+  const [activeEdition, setActiveEdition] = useState(false);
 
   useEffect(() => {
     fetchProducts();
-  }, [currentPage]);
+  }, [currentPage, activeEdition]);
 
   const fetchProducts = async (isSearch) => {
     try {
@@ -73,6 +74,13 @@ const AdminSection = () => {
     if (formPosition.current) {
       formPosition.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const promoteProduct = async (productData, isPromo) => {
+    productData.hasPromo = isPromo;
+    setActiveEdition(true);
+    await updateProduct(productData.id, productData);
+    toast.success(ALERTS.productEdited.message);
   };
 
   const openDeleteModal = (id) => {
@@ -126,6 +134,7 @@ const AdminSection = () => {
             products={products}
             onEdit={editProduct}
             onDelete={openDeleteModal}
+            onPromoAction={promoteProduct}
           />
           <PaginationComponent
             currentPage={currentPage}
