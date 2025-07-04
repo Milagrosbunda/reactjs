@@ -28,6 +28,7 @@ export const ERRORS = {
     "Tuvimos un error al obtener los productos. Por favor, reintente más tarde.",
   GENERAL: "Error interno. Por favor, reintente más tarde.",
   FORM_ERROR: "❌ No pudimos crear el producto. Por favor, reintente más tarde.",
+  NEGATIVE_PRICE: "El precio debe ser mayor a 0",
 };
 
 export const ALERTS = {
