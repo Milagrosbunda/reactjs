@@ -25,11 +25,10 @@ const AdminSection = () => {
   const limit = 5;
   const [totalPages, setTotalPages] = useState(1);
   const [input, setInput] = useState("");
-  const [activeEdition, setActiveEdition] = useState(false);
 
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, activeEdition]);
+  }, [currentPage]);
 
   const fetchProducts = async (isSearch) => {
     try {
@@ -76,12 +75,20 @@ const AdminSection = () => {
     }
   };
 
-  const promoteProduct = async (productData, isPromo) => {
-    productData.hasPromo = isPromo;
-    setActiveEdition(true);
-    await updateProduct(productData.id, productData);
+ const promoteProduct = async (productData, isPromo) => {
+  try {
+    const updatedProduct = { ...productData, hasPromo: isPromo };
+    await updateProduct(productData.id, updatedProduct);
     toast.success(ALERTS.productEdited.message);
-  };
+
+    const updatedList = products.map((p) =>
+      p.id === productData.id ? { ...p, hasPromo: isPromo } : p
+    );
+    setProducts(updatedList);
+  } catch {
+    toast.error(ERRORS.FAILED);
+  }
+};
 
   const openDeleteModal = (id) => {
     setOpenModal(true);
@@ -150,8 +157,8 @@ const AdminSection = () => {
         contentLabel="Confirmar..."
         style={MODAL_STYLES}
       >
-        <h3>Seguro queres eliminar este producto?</h3>
-        <p>‼️ Esta accion no puede revertirse ‼️</p>
+        <h3>¿Seguro queres eliminar este producto?</h3>
+        <p>‼️ Esta acción no puede revertirse ‼️</p>
         <button className="btn btn-danger m-2" onClick={confirmDelete}>
           Confirmar
         </button>
