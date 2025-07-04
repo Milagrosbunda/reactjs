@@ -31,6 +31,7 @@ function SearchComponent({
           className="form-control"
           aria-label="Buscar"
           aria-describedby="inputGroup-sizing-default"
+          placeholder="Empieza a escribir..."
           value={searchTerm}
           onChange={(e) => handleChange(e.target.value)}
         />

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { ERRORS } from "../../constants/constants";
 
 const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
   const [name, setName] = useState("");
@@ -45,6 +47,15 @@ const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
   const cancelForm = () => {
     resetForm();
     onCancel();
+  };
+
+  const addPrice = (value) => {
+    if (value > 0) {
+      setPrice(value);
+    } else {
+      setPrice(null);
+      toast.warning(ERRORS.NEGATIVE_PRICE);
+    }
   };
 
   return (
@@ -103,7 +114,8 @@ const ProductFormComponent = ({ initialProduct, onSubmit, onCancel }) => {
             className="form-control mt-3"
             id="priceInput"
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={(e) => addPrice(e.target.value)}
+            min={1}
           />
         </div>
 
