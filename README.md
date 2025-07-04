@@ -22,16 +22,17 @@ https://reactjs-two-mu.vercel.app/
 
 ### Funcionalidades
 - CRUD de productos
-- Busqueda de productos
-- Creacion y edicion de carrito de compras
-- Paginacion
+- Búsqueda de productos
+- Creación y edición de carrito de compras
+- Paginación
+- Login
 
 ### Accesos de administrador
 - user: admin
 - password: nimda
 
 ## Instalacion
-1. Clonar repositorio:  gh repo clone Milagrosbunda/reactjs
-2. Instalar dependencias: npm install
-3. Levantar proyecto: npm start
+1. Clonar repositorio:  ``gh repo clone Milagrosbunda/reactjs``
+2. Instalar dependencias: ``npm install``
+3. Levantar proyecto: ``npm start``
 
