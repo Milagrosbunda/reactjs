@@ -23,11 +23,11 @@ export const PRODUCT_REQUEST = {
 };
 
 export const ERRORS = {
-  NOT_FOUND: "No pudimos encontrar resultados para tu busqueda.",
+  NOT_FOUND: "No pudimos encontrar resultados para tu búsqueda.",
   FAILED:
-    "Tuvimos un error al obtener los productos. Por favor reintente mas tarde.",
-  GENERAL: "Error interno. Por favor reintente mas tarde.",
-  FORM_ERROR: "❌ No pudimos crear el producto. Por favor reintente mas tarde.",
+    "Tuvimos un error al obtener los productos. Por favor, reintente más tarde.",
+  GENERAL: "Error interno. Por favor, reintente más tarde.",
+  FORM_ERROR: "❌ No pudimos crear el producto. Por favor, reintente más tarde.",
 };
 
 export const ALERTS = {
@@ -50,7 +50,7 @@ export const ALERTS = {
   },
   qtyUpdated: {
     type: "warning",
-    message: "🛍️ Cantidad ajustada segun el stock disponible.",
+    message: "🛍️ Cantidad ajustada según el stock disponible.",
   },
   deletedEntry: {
     type: "success",
@@ -58,11 +58,11 @@ export const ALERTS = {
   },
   loginOk: {
     type: "success",
-    message: "🔑 Pudiste iniciar sesion correctamente!",
+    message: "🔑 Pudiste iniciar sesión correctamente!",
   },
   logOut: {
     type: "success",
-    message: "🔑 Has cerrado sesion!",
+    message: "🔑 Has cerrado sesión!",
   },
   productEdited: {
     type: "success",
@@ -74,7 +74,7 @@ export const ALERTS = {
   },
   emptySearch: {
     type: "info",
-    message: "No se encontraron resultados para tu busqueda.",
+    message: "No se encontraron resultados para tu búsqueda.",
   },
 };
 
